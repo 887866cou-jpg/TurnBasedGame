@@ -1,0 +1,267 @@
+html{
+	font-size:20pt
+}
+*{
+	-webkit-user-select:none;
+	user-select:none;
+	font-family:"default";
+}
+@font-face{
+	font-family:"default";
+	src: url("./fonts/PrinceValiant.ttf") format("TrueType");
+}
+@font-face{
+	font-family:"alt1";
+	src: url("./fonts/KuenstlerGotisch.ttf") format("TrueType");
+}
+@font-face{
+	font-family:"sharp";
+	src: url("./fonts/Charakterny.otf") format("OpenType");
+}
+#option1{
+	font-family:"default";
+}
+#option2{
+	font-family:"alt1";
+}
+#option3{
+	font-family:"sharp";
+}
+#pause_button{
+	position:fixed;
+	top:0;
+	right:0;
+	z-index:99;
+	width:50px;
+	height:min-intrinsic;
+}
+.alert{
+	background-color:yellow;
+	transition:color 0.5s 0, background-color 0.5s 0;
+	animation: 0.35s linear 0s alert infinite alternate;
+}
+@Keyframes alert{
+	0%{
+		background-color:yellow;
+		color:red;
+	}
+	100%{
+		background-color:red;
+		color:yellow;
+	}
+}
+.pause_buttons{
+	width:25%;
+	height:3%;
+	border-radius:5%;
+	font-size:150%;
+}
+#achievements_menu, #inventory_menu{
+	overflow:scroll;
+}
+#console{
+	z-index:100;
+	background-color:darkgray;
+	opacity:0;
+	position:fixed;
+	transition: opacity 250ms;
+	max-height: 50%;
+	text-wrap:wrap;
+	overflow-x:scroll;
+	pointer-events:none;
+	input{
+		background-color:black;
+		color:white;
+	}
+}
+#pause_menu, #inventory_menu{
+	z-index:100;
+	width:95%;
+	height:95%;
+	position:absolute;
+	top:10px;
+	object-position:center;
+}
+dialog{
+	width:95%;
+	height:95%;
+	position:absolute;
+	top:10px;
+	margin:0;
+	padding:0;
+	object-position:center;
+	border-radius:1%;
+}
+#hp{
+	font-size:150%;
+}
+.menu_button,.choice{
+	position:relative;
+	width:25%;
+	height:15%;
+	border-radius:5%;
+	left:calc(50% - 12.5%);
+	font-size:200%;
+}
+.map_node{
+	width:calc(100% / 11);
+	height:calc(100% / 11);
+}
+fieldset{
+	border-color:gray;
+}
+#character_target{
+	z-index:99;
+	background-color:white;
+	transition:background 500ms;
+}
+.menu_button:nth-child(3n):not(#enemy_select){
+	background-color:grey;
+	animation: 1s pulsate infinite alternate;
+}
+.menu_button:nth-child(3n-2):not(#enemy_select){
+	background-color:grey;
+	animation: 2s pulsate infinite alternate;
+}
+.menu_button:nth-child(3n-1):not(#enemy_select){
+	background-color:grey;
+	animation: 3s pulsate infinite alternate;
+}
+@Keyframes pulsate{
+	0%{
+		background-color:grey;
+	}
+	100%{
+		background-color:darkgray;
+	}
+}
+.area{
+	outline:solid;
+	padding:0;
+	margin:0;
+	width:100%;
+	height:50%;
+	background-color:white;
+	overflow:scroll;
+}
+#fight_dialog{
+	width:calc(100% - 7px);
+	height:calc(100% - 7px);
+	position:absolute;
+	top:0;
+	left:0;
+	margin:0;
+	padding:0;
+	object-position:center;
+	background-color: black;
+	color: red;
+}
+#enemy_select{
+	outline:solid;
+	padding:0;
+	margin:0;
+	width:100%;
+	height:10%;
+	background-color:white;
+}
+.target{
+	background-color:red;
+}
+#player{
+	z-index:5;
+	padding:0;
+	margin:0;
+	outline:solid;
+	position:absolute;
+	left:50px;
+	top:12.5px;
+	height:calc(100% - 25px);
+	width:calc(50% - 150px);
+	background-color:blue;
+	/*align-content:center;*/
+}
+#enemies{
+	z-index:5;
+	padding:0;
+	margin:0;
+	outline:solid;
+	position:absolute;
+	right:50px;
+	top:12.5px;
+	height:calc(100% - 25px);
+	width:calc(50% - 150px);
+	background-color:red;
+}
+#turn_order{
+	z-index:4;
+	padding:0;
+	margin:0;
+	position:absolute;
+	left:calc(50% - 100px);
+	top:50px;
+	height:calc(100% - 100px);
+	width:200px;
+	background-color:green;
+}
+p{
+	color:black;
+	margin:0px;
+	padding:0px;
+}
+#select_starting_weapon_dialog,#difficulty_dialog,#stats_dialog{
+	overflow:scroll;
+}
+label{
+	transition:color 250ms;
+}
+.menu_button_nocenter{
+	font-size:75%;
+}
+.abilities{
+	padding:0px;
+	margin:0px;
+}
+.popup{
+	display:none;
+	position:absolute;
+	margin:0;
+	padding:0;
+	z-index:6;
+	font-size:50%;
+	background-color:black;
+	color:white;
+	border-radius:15%;
+}
+.character_ability{
+	padding:5px;
+	margin:5px;
+	font-size:57%;
+	width:100%;
+	color:black;
+	transition:font-size 525ms ease-in-out, color 500ms ease-in-out, background-color 500ms, opacity 500ms;
+	overflow-wrap:break-word;
+	&:not(&:disabled){
+		color:green;
+		opacity:1;
+		&:hover:not(&:active){
+			font-size:58%;
+			overflow:clip;
+			color:rgb(2, 196, 54);
+		}
+		&:active{
+			transition:font-size 100ms ease-out;
+			font-size:57%;
+		}
+	}
+	&:disabled{
+		background-color:darkgray;
+		color:darkred;
+		opacity:0.5;
+		&:hover{
+			font-size:57%;
+			overflow:clip;
+			color:red;
+		}
+	}
+}
+

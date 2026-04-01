@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="./css.css">
+	</head>
+	<body>
+		<button id="pause_button">
+			&#129908;&#129904;
+		</button>
+		<div id="console">
+			<p id="console_output">
+				
+			</p>
+			<p id="keys_pressed">
+				
+			</p>
+			<p id="console_alert_text">
+				
+			</p>
+			<input type="text" id="console_input">
+				
+		</div>
+		<dialog id="character_target"></dialog>
+		<dialog id="path_dialog">
+			<p>
+				Would you like to take
+			</p>
+			<button id="hard_path">
+				The hard path
+			</button>
+			<p>
+				Or
+			</p>
+			<button id="easy_path">
+				The easy path
+			</button>
+		</dialog>
+		<dialog id="equip_dialog"></dialog>
+		<dialog id="event_dialog"></dialog>
+		<dialog id="skill_dialog"></dialog>
+		<dialog id="pause_menu">
+			<p id="seed">
+				
+			</p>
+			<p id="reputation">
+				
+			</p>
+			<p id="level">
+				Global level: 0
+			</p>
+			<fieldset>
+				<legend>
+					Money
+				</legend>
+				<li id="copper"></li>
+				<li id="silver"></li>
+				<li id="gold"></li>
+				<li id="platinum"></li>
+			</fieldset>
+			<dialog id="inventory_menu">
+				<button id="exit_inventory_button">
+					back
+				</button><br>
+				<li id="inventory"></li>
+			</dialog>
+			<dialog id="achievements_menu">
+				<p id="most_recent_achievement" class="alert">
+					
+				</p>
+				<fieldset>
+					<legend>
+						Achievements list
+					</legend>
+					<label for="achievement_meter" id="achievement_meter_label">0%</label>
+					<meter id="achievement_meter"></meter>
+					<div id="achievements_list">
+						
+					</div>
+					<button id="close_achievements">
+						Back
+					</button>
+				</fieldset>
+			</dialog>
+			<button id="inventory_button">
+				Inventory
+			</button><br>
+			<button id="open_achievements_menu">
+				Achievements
+			</button><br>
+			<button id="close_pause_menu">
+				Resume
+			</button>
+		</dialog>
+		<dialog id="menu_screen" open>
+			<button class="menu_button" id="start_button">New Game</button><br>
+			<button class="menu_button" id="settings_button">Settings</button><br>
+			<button class="menu_button" id="options_button">Options</button><br>
+			<button class="menu_button" id="stats_button">Stats</button>
+			<dialog id="settings_menu">
+				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label>
+				<button id="close_settings_button">Close</button>
+			</dialog>
+			<dialog id="options_menu">
+				<button id="starting_weapon_select_button" class="menu_button" disabled>
+					Select Starting weapon
+				</button>
+				<br>
+				<button id="difficulty_select" class="menu_button">
+					Difficulty
+				</button>
+				<br>
+				<button id="close_options_menu_button" class="menu_button">
+					close
+				</button>
+				<dialog id="select_starting_weapon_dialog"></dialog>
+				<dialog id="difficulty_dialog">
+					<meter id="difficulty_meter" value="0"></meter>
+					<button id="enable_all">Enable all difficulties</button><br>
+					<input type="checkbox" id="double_scaling" class="difficulties"><label for="double_scaling">Double enemy scaling</label><br>
+					<input type="checkbox" id="faster_scaling" class="difficulties"><label for="faster_scaling">Enemy scaling is twice as frequent</label><br>
+					<input type="checkbox" id="slower_leveling" class="difficulties"><label for="slower_leveling">You level up half as fast</label><br>
+					<input type="checkbox" id="weakness" class="difficulties"><label for="weakness">You start with -10% resistances</label><br>
+					<input type="checkbox" id="swarms" class="difficulties"><label for="swarms">All combats contain an extra enemy, but all enemies scale half as much</label><br>
+					<input type="checkbox" id="double_base_hp" class="difficulties"><label for="double_base_hp">Double the base Hp of all enemies</label><br>
+					<input type="checkbox" id="double_damage_scaling" class="difficulties"><label for="double_damage_scaling">Double the damage scaling of all enemies</label><br>
+					<input type="checkbox" id="no_upgrades" class="difficulties"><label for="no_upgrades">You cannot upgrade your weapons</label><br>
+					<input type="checkbox" id="unlucky" class="difficulties"><label for="unlucky">You are <i style="color:red">unlucky</i></label><br>
+					<input type="checkbox" id="weak_strikes" class="difficulties"><label for="weak_strikes">Lowers all of your proc coefficients</label><br>
+					<input type="checkbox" id="soullink" class="difficulties"><label for="soullink"><i>Your souls will be crushed under the weight of death</i></label><br>
+					<input type="checkbox" id="enchant_limit" class="difficulties"><label for="enchant_limit">Your weapons have 3 max enchants instead of 5</label><br>
+					<input type="checkbox" id="armor_falloff" class="difficulties"><label for="armor_falloff">Damage reduction from armor falls off faster</label><br>
+					<hr>
+					<span id="difficulty_span">
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_1">
+						Tough Guys 1
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_2">
+						Tough Guys 2
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_3">
+						Tough Guys 3
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_4">
+						Crowded 1
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_5">
+						Crowded 2
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_6">
+						Crowded 3
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_7">
+						Nerfed 1
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_8">
+						Nerfed 2
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_9">
+						Nerfed 3
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_10">
+						Nerfed 4
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_11">
+						Nerfed 5
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_12">
+						Nerfed 6
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_13">
+						Annoying
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_14">
+						Bigger badder (and more)
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_15">
+						Uphill Struggle
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_16">
+						HELL 1
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_17">
+						HELL 2
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_18">
+						HELL 3
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_19">
+						HELL 4
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_20">
+						HELL 5
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_21">
+						HELL 6
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_22">
+						HELL 7
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_23">
+						HELL 8
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_24">
+						HELL 9
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_25">
+						HELL 10
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_26">
+						HELL 11
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_27">
+						HELL 12
+					</button>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_28">
+						HELL 13
+					</button><br>
+					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_29">
+						To The Max!
+					</button><br>
+					<button id="close_difficulty">
+						Close
+					</button>
+					</span>
+				</dialog>
+			</dialog>
+			<dialog id="stats_dialog">
+				<div id="stats">
+					
+				</div>
+				<button id="close_stats_dialog">
+					Back
+				</button>
+			</dialog>
+		</dialog>
+		<dialog id="fight_dialog">
+			<div id="player">
+				<div id="stats_area" class="area">
+					<div id="character_0_stats" class="char_0 stats">
+						
+					</div>
+					<div id="character_1_stats" class="char_1 stats">
+							
+					</div>
+					<div id="character_2_stats" class="char_2 stats">
+							
+					</div>
+					<div id="character_3_stats" class="char_3 stats">
+							
+					</div>
+				</div>
+				<div id="abilities_area" class="area">
+					<div id="character_select">
+						<div id="character_0_abilities" class="char_0 abilities"></div>
+						<div id="character_1_abilities" class="char_1 abilities"></div>
+						<div id="character_2_abilities" class="char_2 abilities"></div>
+						<div id="character_3_abilities" class="char_3 abilities"></div>
+					</div>
+				</div>
+			</div>
+			<div id="enemies">
+				<div id="enemy_select"></div>
+				<div id="enemy_stats" class="area">
+					<div id="enemy_0_stats" class="Estats">
+						
+					</div>
+					<div id="enemy_1_stats" class="Estats">
+							
+					</div>
+					<div id="enemy_2_stats" class="Estats">
+							
+					</div>
+					<div id="enemy_3_stats" class="Estats">
+							
+					</div>
+				</div>
+			</div>
+			<div id="turn_order">
+				<button id="pass">
+					Pass Turn
+				</button>
+				<ol class="area" id="turn_order_area">
+					
+				</ol>
+			</div>
+		</dialog>
+		<script src="./Scripts/classes.js"></script>
+		<script src="./Scripts/elements.js"></script>
+		<script src="./Scripts/Modding/FunctionsForMods.js"></script>
+		<script src="./Scripts/functions.js"></script>
+		<script src="./Scripts/debug.js"></script>
+		<script src="./Scripts/variables.js"></script>
+		<script src="./Scripts/events.js"></script>
+		<script src="./Scripts/startup.js"></script>
+		<script src="./Scripts/Modding/ModStartup.js"></script>
+	</body>
+</html>

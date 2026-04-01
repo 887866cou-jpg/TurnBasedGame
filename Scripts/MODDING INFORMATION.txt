@@ -1,0 +1,22 @@
+I fully endorse modding this game, and am adding tools to help with the process.
+I currently have added     -----     1     -----     modding tool.
++ Tools
+++ ModSpawncard function
+the ModSpawncard function (most of the time) requires 6 arguments
++++ Argument 1: zone
+this is a whole number value, that starts at 0.
+as of now there is only zone 0 so just keep it as 0 for now
++++ Argument 2: level
+this is another whole number value that changes as the "Party.level" value goes up, use the level you want the encounter to be at.
++++ Argument 3: path
+the path argument is either "easy" or "hard" but if you want to make more, I will add support for that later.
++++ Argument 4: mode
+the mode argument is either "add" or "replace".
++++ Argument 5: value
+++++ When using the "add" mode
+Argument 5 is a string while using the "add" value for Argument 4, this string is the name of the Enemy type that you want to add to that spawncard
+you also need to add a 6th argument to the end for what encounter you want to add it to, this will be another whole number.
+Argument 5 can also be an array of those same strings, and you can forego the 6th argument, this will add all of the values of the array to each encounter.
+++++ When using the "replace" mode
+
+ModSpawncard(zone, level, path, mode="add", value)

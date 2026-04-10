@@ -364,11 +364,11 @@ var Party={
 						},
 						effect(){
 							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.startingStamina+=1;
-							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Durablity");
+							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Quick Strike");
 						}
 					}
-				]
-				/*[
+				],
+				[
 					//level 4 skills
 					{
 						name:"Natural Plating",
@@ -377,11 +377,11 @@ var Party={
 							return Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Innate defence")||Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Regeneration");
 						},
 						effect(){
-							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.resistances.forEach((resist)=>{resist+=0.05});
-							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Innate defence");
+							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.armor+=10;
+							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Natural Plating");
 						}
 					},
-					{
+					/*{
 						name:"Regeneration",
 						desc:"Start each combat with 5 regen",
 						get condition(){
@@ -390,19 +390,22 @@ var Party={
 						effect(){
 							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Regeneration");
 						}
-					},
+					},*/
 					{
-						name:"Quick Strike",
-						desc:"Gain +1 starting stamina",
+						name:"Weapons Training",
+						desc:"The weapon Equipped to Hen Farfield gets -1 stamina cost on all of its actions (to a minimum of 1)",
 						get condition(){
-							return Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Durablity")||Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Reflex");
+							return Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Regeneration")||Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.includes("Quick Strike");
 						},
 						effect(){
-							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.startingStamina+=1;
-							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Durablity");
+							//alert(Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Actions[Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Equipment.Weapons.name]);
+							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Actions[Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Equipment.Weapons.name].forEach((action)=>{
+								action.cost=Math.max(1,action.cost-1);
+							});
+							Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")].Stats.skills.push("Weapons Training");
 						}
 					}
-				]*/
+				]
 			],
 			Equipment:{
 				Armor:{
@@ -1678,7 +1681,8 @@ var Equipment={
 			},uneffect(a){},odds:[0.95,0.98]},
 			{name:"Mythic",effect(a){
 				a.Actions[a.name].forEach((action)=>{
-					action.damage+=6;
+					action.damage+=8;
+					
 				});
 			},uneffect(a){},odds:[0.98,0.99]},
 			{name:"Perfected",effect(a){
@@ -2688,6 +2692,11 @@ let Events=[
 						if(!GLOBAL.usingSeed){
 							Events[0]=Events[0].filter((event)=>event.name!=="Abandoned Castle");
 						}
+						let Combat=["Treekin","Treekin"];
+						for(let i=1;i<Party.level;i++){
+							Combat.push("Treekin");
+						}
+						GLOBAL.Combat.StartCombat(true,Combat);
 					}
 				},
 				{
@@ -2960,7 +2969,7 @@ let Events=[
 							}
 						});
 						addAchievement(8);
-						MakeSubEvent(5);
+						MakeSubEvent(6);
 						if(!GLOBAL.usingSeed){
 							Events[0]=Events[0].filter((event)=>event.name!=="Phyloce Of Blessings");
 						}
@@ -3134,17 +3143,22 @@ let Events=[
 ];
 /*{
 		name:"Rainy Shore",
-		text:`In the cold shower of nature, you take a humble gravel path thats soaked with the essence of natures tears,<br> alies a peaceful beach that is gleeming with a gloomy tranquility.<br>You take in it's refreshing air remensecing this moment.  `,
+		text:`In the cold shower of nature, you take a humble gravel path thats soaked with the essence of natures tears,<br> alies a peaceful beach that is gleeming with a gloomy tranquility.<br>You take in it's refreshing air remensecing this moment. <br><br> You see an approaching figure in the mist of the foggy ocean, having zero clue whether it's a threat.<br><br>What do you do?`,
 		options:[
 			{
-				text:"Let him reforge your weapons (+2 damage each)",
+				text:"Call out to the figure.",
 				condition(){
 					return true;
 				},
 				effect(){
-					Party.Characters.forEach((character)=>{
-						character.Actions[character.Equipment.Weapons.name]
-					})
+					if(new Chance(0.5).succeed){
+						MakeSubEvent(6);
+					}else{
+						MakeSubEvent(7);
+					}
+					if(!GLOBAL.usingSeed){
+						Events[0]=Events[0].filter((event)=>event.name!=="Rainy Shore");
+					}
 				}
 			},
 			{
@@ -3153,7 +3167,7 @@ let Events=[
 					return true;
 				},
 				effect(){
-					GLOBAL.Combat.StartCombat(true,["The Blacksmith"])
+					
 				}
 			},
 		]
@@ -3240,6 +3254,32 @@ let subEvents=[
 			},
 		]
 	},
+	{
+		name:"Cryptic Message",
+		text:`Placeholder text`,
+		options:[
+			{
+				text:"Ok",
+				condition(){
+					return true;
+				},
+				effect(){}
+			},
+		]
+	},
+	{
+		name:"Disbursement",
+		text:`The figure seems to fade away into the fog, leaving you in a slight sense of unease...`,
+		options:[
+			{
+				text:"Ok",
+				condition(){
+					return true;
+				},
+				effect(){}
+			},
+		]
+	},//current ending index of the subevent list is 7
 ];
 Console("Turn based game/Scripts/variables.js loaded");
 
@@ -3836,6 +3876,12 @@ let GLOBAL={
 							]
 						}
 					],
+					bosses:[
+						{
+							card:["Bandit","Bandit Leader","Bandit"],
+							description:"As you walk to a clearing in front of you, you see a pair of bandits standing around a large tent in the center of the clearing.<br>A few well made fires sit around the camp, the pops and crackles of the fires soothing your mind as you decide what to do..."
+						}
+					],
 					Card(prop, level){
 						if(!level){
 							if(this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length>1){
@@ -3894,32 +3940,30 @@ let GLOBAL={
 					throw new TypeError(`GLOBAL.Combat.StartCombat() "ENEMYOBJECTS_OR_ENEMYTYPES" was not declared as an array (declared as an "${typeof ENEMYOBJECTS_OR_ENEMYTYPES}")`);
 				}
 				if(RANDENEMIES){
-						if(ENEMYOBJECTS_OR_ENEMYTYPES.every((element)=>typeof element=="string")){
-							error=" fight"
-							for(var numberOfEnemies=0;numberOfEnemies<ENEMYOBJECTS_OR_ENEMYTYPES.length;numberOfEnemies++){
-								//alert(numberOfEnemies);
-								let additionEnemy=new Enemy(ENEMYOBJECTS_OR_ENEMYTYPES[numberOfEnemies]);
-								this.enemies.push(additionEnemy);
-							}
-							if(DIFFICULTY_SWARMS.checked){
-								this.enemies.push(new Enemy(ENEMYOBJECTS_OR_ENEMYTYPES[ENEMYOBJECTS_OR_ENEMYTYPES.length-1]));
-							}
-							UpdateEnemyDisplay();
-							UpdateTurnOrder(true);
-							FIGHTDIALOG.show();
-							this.inCombat=true;
-							UpdateEnemyStatDisplay(GLOBAL.Combat.enemies.findIndex((s)=>s.Stats.target))
-						}else{
-							throw new TypeError(`GLOBAL.Combat.StartCombat() "RANDENEMIES" argument was declared as true, but "ENEMYOBJECTS_OR_ENEMYTYPES" was not declared as an array of only strings (Elements that were not strings are: "${ENEMYOBJECTS_OR_ENEMYTYPES.filter((element)=>typeof element!=="string")}")`);
+					if(ENEMYOBJECTS_OR_ENEMYTYPES.every((element)=>typeof element=="string")){
+						error=" fight"
+						for(var numberOfEnemies=0;numberOfEnemies<ENEMYOBJECTS_OR_ENEMYTYPES.length;numberOfEnemies++){
+							//alert(numberOfEnemies);
+							let additionEnemy=new Enemy(ENEMYOBJECTS_OR_ENEMYTYPES[numberOfEnemies]);
+							this.enemies.push(additionEnemy);
 						}
-				}else{
-				
+						if(DIFFICULTY_SWARMS.checked){
+							this.enemies.push(new Enemy(ENEMYOBJECTS_OR_ENEMYTYPES[ENEMYOBJECTS_OR_ENEMYTYPES.length-1]));
+						}
+						UpdateEnemyDisplay();
+						UpdateTurnOrder(true);
+						FIGHTDIALOG.show();
+						this.inCombat=true;
+						UpdateEnemyStatDisplay(GLOBAL.Combat.enemies.findIndex((s)=>s.Stats.target))
+					}else{
+						throw new TypeError(`GLOBAL.Combat.StartCombat() "RANDENEMIES" argument was declared as true, but "ENEMYOBJECTS_OR_ENEMYTYPES" was not declared as an array of only strings (Elements that were not strings are: "${ENEMYOBJECTS_OR_ENEMYTYPES.filter((element)=>typeof element!=="string")}")`);
+					}
 				}
 				TriggerStartOfBattleEffects();
 				Party.Characters.forEach((character)=>{
 					character.Stats.gainXp(this.fights*Math.max((this.enemies.length-1),1));
 				})
-				Party.gainXp(this.fights*Math.max((this.enemies.length-1),1))
+				Party.gainXp(this.fights*Math.max((this.enemies.length-1),1));
 			}catch(e){Console(e+error)}
 		},
 		EndCombat(){

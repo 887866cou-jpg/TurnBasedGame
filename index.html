@@ -6,12 +6,17 @@
 		<link rel="stylesheet" href="./css.css">
 	</head>
 	<body>
-		<button id="pause_button">
-			&#129908;&#129904;
-		</button>
+		<div id="sidebar_buttons">
+			<button id="pause_button">
+				&#129908;&#129904;
+			</button>
+			<button id="info_button">
+				?
+			</button>
+		</div>
 		<div id="console">
 			<p id="console_output">
-				test
+				
 			</p>
 			<p id="keys_pressed">
 				
@@ -24,19 +29,30 @@
 		</div>
 		<dialog id="character_target"></dialog>
 		<dialog id="path_dialog">
-			<p>
-				Would you like to take
-			</p>
-			<button id="hard_path">
-				The hard path
-			</button>
-			<p>
-				Or
-			</p>
-			<button id="easy_path">
-				The easy path
-			</button>
+			<div id="normal_combat">
+				<p>
+					Would you like to take
+				</p>
+				<button id="hard_path">
+					The hard path
+				</button>
+				<p>
+					Or
+				</p>
+				<button id="easy_path">
+					The easy path
+				</button>
+			</div>
+			<div id="boss_combat" style="display:none;">
+				<p id="boss_desc">
+					testing
+				</p>
+				<button id="boss_button">
+					Confront them
+				</button>
+			</div>
 		</dialog>
+		
 		<dialog id="equip_dialog"></dialog>
 		<dialog id="event_dialog"></dialog>
 		<dialog id="skill_dialog"></dialog>
@@ -66,7 +82,7 @@
 				<li id="inventory"></li>
 			</dialog>
 			<dialog id="achievements_menu">
-				<p id="most_recent_achievement" class="alert">
+				<p id="most_recent_achievement" class="alert ">
 					
 				</p>
 				<fieldset>

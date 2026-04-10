@@ -83,6 +83,9 @@ function updateInventory(){
 	})
 	}catch(e){Console(e)}
 }
+function UpdateBossScreen(){
+	
+}
 function UpdateStatDisplay(index){
 	error=" statdisplay"
 	Array.from(CHARACTERSTATS).forEach((element)=>{
@@ -474,6 +477,7 @@ function Damage(damageObject){
 			to: the object to deal the damage to
 			Type: the type of damage being dealt
 			crit: the chance that the damage will crit.
+			useArmor: a bool telling the game whether or not to use armor to calulate damage
 		}
 	*/
 	let NumberOfEnemies=GLOBAL.Combat.enemies.length;
@@ -493,8 +497,8 @@ function Damage(damageObject){
 	//this line is causing an error
 	let damageAmount=0;
 	if(damageObject.crit!==undefined){
-		if(new Chance(1-damageObject.crit,1).succeed){
-			addAchievement(55)
+		if(new Chance(damageObject.crit,1).succeed){
+			addAchievement(55);
 			Console(`${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2} (CRIT!) ${damageObject.Type} damage, dealt to ${damageObject.to.Stats.name}`)
 			damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2
 			damageObject.to.Stats.hp-=damageAmount;
@@ -808,6 +812,7 @@ function MakeEvent(eventID){
 		EVENTOPTION.innerHTML=option.text;
 		if(option.condition()){
 			EVENTOPTION.addEventListener("click",()=>{
+				checkToStartBoss()
 				EVENTDIALOG.close();
 				option.effect();
 			});
@@ -819,6 +824,26 @@ function MakeEvent(eventID){
 	});
 	EVENTDIALOG.show();
 	}catch(e){Console(e+error)}
+}
+function checkToStartBoss(){
+	if(GLOBAL.Combat.fights/(GLOBAL.mapNode[0]+1)<ReadSeed(GLOBAL.seed).numberOfCombats){
+		Console("No Boss");
+	}else{
+		updateBossDescription(GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].desc);
+	}
+}
+function updateBossDescription(description){
+	try{
+		NORMALCOMBAT.style.display="none";
+		BOSSCOMBAT.style.display="block";
+		BOSSDESC.innerHTML=description;
+		STARTBOSSCOMBAT.addEventListener("click",()=>{
+			GLOBAL.Combat.StartCombat(true,GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].card);
+			GLOBAL.mapNode[0]++;
+		})
+	}catch(e){
+		Console(e,"UPDATEBOSSDESC");
+	}
 }
 function MakeSkillChoice(characterIndex){
 	GLOBAL.SkillsWaiting++;
@@ -1295,6 +1320,7 @@ function ReadSeed(seed){
 	try{
 	let out={};
 	let numberOfCombats=ConvertFromSeedString(seed[0]);
+	out.numberOfCombats=numberOfCombats;
 	Console(`Number of combats: ${numberOfCombats}`,"SEEDGEN");
 	let numberOfEvents=ConvertFromSeedString(seed[1]);
 	Console(`Number of Equip pickups per zone: ${numberOfEvents}`,"SEEDGEN");

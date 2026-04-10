@@ -1,23 +1,27 @@
 //alert("elements")
 const DOC=document;
+
 //buttons
-const NEWGAMEBUTTON=DOC.getElementById("start_button");
-const SETTINGSBUTTON=DOC.getElementById("settings_button");
-const CLOSESETTINGSBUTTON=DOC.getElementById("close_settings_button");
-const CHANGEPASSKEY=DOC.getElementById("change_pass_turn_key");
-const STARTINGWEAPONSELECTBUTTON=DOC.getElementById("starting_weapon_select_button");
-const OPTIONSBUTTON=DOC.getElementById("options_button");
-const CLOSEOPTIONSMENUBUTTON=DOC.getElementById("close_options_menu_button");
-const DIFFICULTYBUTTON=DOC.getElementById("difficulty_select");
-const CLOSEDIFFICULTYBUTTON=DOC.getElementById("close_difficulty");
-const OPENACHIEVEMENTS=DOC.getElementById("open_achievements_menu");
-const CLOSEACHIEVEMENTS=DOC.getElementById("close_achievements");
-const ENABLEALLDIFFICULTIES=DOC.getElementById("enable_all")
-const INVENTORYBUTTON=DOC.getElementById("inventory_button")
-const EXITINVENTORYBUTTON=DOC.getElementById("exit_inventory_button")
-const PAUSEBUTTON=DOC.getElementById("pause_button");
-const STATSBUTTON=DOC.getElementById("stats_button");
-const CLOSESTATSDIALOG=DOC.getElementById("close_stats_dialog")
+	const NEWGAMEBUTTON=DOC.getElementById("start_button");
+	const SETTINGSBUTTON=DOC.getElementById("settings_button");
+	const CHANGEPASSKEY=DOC.getElementById("change_pass_turn_key");
+	const STARTINGWEAPONSELECTBUTTON=DOC.getElementById("starting_weapon_select_button");
+	const OPTIONSBUTTON=DOC.getElementById("options_button");
+	const DIFFICULTYBUTTON=DOC.getElementById("difficulty_select");
+	const OPENACHIEVEMENTS=DOC.getElementById("open_achievements_menu");
+	const ENABLEALLDIFFICULTIES=DOC.getElementById("enable_all");
+	const INVENTORYBUTTON=DOC.getElementById("inventory_button");
+	const PAUSEBUTTON=DOC.getElementById("pause_button");
+	const STATSBUTTON=DOC.getElementById("stats_button");
+	const STARTBOSSCOMBAT=DOC.getElementById("boss_button");
+	const INFOBUTTON=DOC.getElementById("info_button");
+	//Buttons to close dialogs
+		const CLOSEOPTIONSMENUBUTTON=DOC.getElementById("close_options_menu_button");
+		const CLOSESETTINGSBUTTON=DOC.getElementById("close_settings_button");
+		const CLOSEACHIEVEMENTS=DOC.getElementById("close_achievements");
+		const EXITINVENTORYBUTTON=DOC.getElementById("exit_inventory_button");
+		const CLOSEDIFFICULTYBUTTON=DOC.getElementById("close_difficulty");
+		const CLOSESTATSDIALOG=DOC.getElementById("close_stats_dialog");
 //dialogs
 const MENUDIALOG=DOC.getElementById("menu_screen");
 const FIGHTDIALOG=DOC.getElementById("fight_dialog");
@@ -34,6 +38,29 @@ const ACHIEVEMENTSMENU=DOC.getElementById("achievements_menu");
 const INVENTORYMENU=DOC.getElementById("inventory_menu");
 const STATSDIALOG=DOC.getElementById("stats_dialog");
 
+//settings
+const FONTSELECT=DOC.getElementById("select_font");
+const SETTINGS_ATTACKINTERVAL=DOC.getElementById("attack_interval_setting");
+
+//difficulties
+const DIFFICULTY_CHECKS=DOC.getElementsByClassName("difficulties");
+const DIFFICULTY_DOUBLESCALING=DOC.getElementById("double_scaling");
+const DIFFICULTY_FASTERSCALING=DOC.getElementById("faster_scaling");
+const DIFFICULTY_SLOWLEVELING=DOC.getElementById("slower_leveling");
+const DIFFICULTY_WEAKNESS=DOC.getElementById("weakness");
+const DIFFICULTY_SWARMS=DOC.getElementById("swarms");
+const DOUBLEBASEHP=DOC.getElementById("double_base_hp");
+const DIFFICULTY_DOUBLEDAMAGESCALING=DOC.getElementById("double_damage_scaling");
+const DIFFICULTY_NOUPGRADES=DOC.getElementById("no_upgrades");
+const DIFFICULTY_UNLUCKY=DOC.getElementById("unlucky");
+const DIFFICULTY_WEAK_STRIKES=DOC.getElementById("weak_strikes");
+const DIFFICULTY_SOULLINK=DOC.getElementById("soullink");
+const DIFFICULTY_ENCHANTLIMIT=DOC.getElementById("enchant_limit");
+const DIFFICULTY_ARMORFALLOFF=DOC.getElementById("armor_falloff");
+
+//difficulty presets
+const PRESET1_TOUGHGUYS=DOC.getElementById("difficulty_preset_1");
+const PRESETS=DOC.getElementsByClassName("difficulty_preset");
 
 //other
 const CHARACTERSTATS=DOC.getElementsByClassName("stats");
@@ -61,27 +88,7 @@ const INVENTORY=DOC.getElementById("inventory")
 const SEED=DOC.getElementById("seed");
 const STATS=DOC.getElementById("stats");
 const MOSTRECENTACHIEVEMENT=DOC.getElementById("most_recent_achievement");
-//settings
-const FONTSELECT=DOC.getElementById("select_font");
-//difficulties
-const DIFFICULTY_CHECKS=DOC.getElementsByClassName("difficulties");
-const DIFFICULTY_DOUBLESCALING=DOC.getElementById("double_scaling");
-const DIFFICULTY_FASTERSCALING=DOC.getElementById("faster_scaling");
-const DIFFICULTY_SLOWLEVELING=DOC.getElementById("slower_leveling");
-const DIFFICULTY_WEAKNESS=DOC.getElementById("weakness");
-const DIFFICULTY_SWARMS=DOC.getElementById("swarms");
-const DOUBLEBASEHP=DOC.getElementById("double_base_hp");
-const DIFFICULTY_DOUBLEDAMAGESCALING=DOC.getElementById("double_damage_scaling");
-const DIFFICULTY_NOUPGRADES=DOC.getElementById("no_upgrades");
-const DIFFICULTY_UNLUCKY=DOC.getElementById("unlucky");
-const DIFFICULTY_WEAK_STRIKES=DOC.getElementById("weak_strikes");
-const DIFFICULTY_SOULLINK=DOC.getElementById("soullink");
-const DIFFICULTY_ENCHANTLIMIT=DOC.getElementById("enchant_limit");
-const DIFFICULTY_ARMORFALLOFF=DOC.getElementById("armor_falloff");
-
-//difficulty presets
-const PRESET1_TOUGHGUYS=DOC.getElementById("difficulty_preset_1");
-const PRESETS=DOC.getElementsByClassName("difficulty_preset");
-//settings
-const SETTINGS_ATTACKINTERVAL=DOC.getElementById("attack_interval_setting");
+const NORMALCOMBAT=DOC.getElementById("normal_combat");
+const BOSSCOMBAT=DOC.getElementById("boss_combat");
+const BOSSDESC=DOC.getElementById("boss_desc");
 Console("Turn based game/Scripts/elements.js loaded");

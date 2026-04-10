@@ -27,13 +27,24 @@ html{
 #option3{
 	font-family:"sharp";
 }
-#pause_button{
-	position:fixed;
-	top:0;
-	right:0;
-	z-index:99;
-	width:50px;
-	height:min-intrinsic;
+#sidebar_buttons{
+	#pause_button{
+		position:fixed;
+		top:0;
+		right:0;
+		z-index:99;
+		width:50px;
+		height:2em;
+	}
+	#info_button{
+		position:fixed;
+		top:2em;
+		right:0;
+		z-index:99;
+		width:50px;
+		height:2em;
+		display:none;
+	}
 }
 .alert{
 	background-color:yellow;
@@ -65,7 +76,7 @@ html{
 	opacity:0;
 	position:fixed;
 	transition: opacity 250ms;
-	max-height: 50%;
+	max-height: 100%;
 	text-wrap:wrap;
 	overflow-x:scroll;
 	pointer-events:none;
@@ -202,6 +213,12 @@ fieldset{
 	height:calc(100% - 100px);
 	width:200px;
 	background-color:green;
+}
+#turn_order_area{
+	height: calc(100% - 100px);
+}
+#enemy_stats{
+	height:calc(100% - 100px);
 }
 p{
 	color:black;

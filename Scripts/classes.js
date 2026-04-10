@@ -13,6 +13,7 @@ class Enemy{
 					name:`test enemy ${GLOBAL.EnemiesCreated}`,
 					maxHp:(15*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
 					armor:0,
+					type:"Debuffer",
 					speed:rand(1,6),
 					resistances:{slashing:0,blunt:0,piercing:0,debuff:0,magic:0,holy:0},
 					debuffs:[],
@@ -108,6 +109,7 @@ class Enemy{
 					maxHp:(randHpVal*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
 					name:`bandit ${GLOBAL.EnemiesCreated}`,
 					armor:0,
+					type:"Bandit",
 					speed:rand(7,15),
 					resistances:{slashing:rand(30,41)/100,blunt:-(rand(10,16)/100),piercing:0,debuff:0,magic:0,holy:0},
 					debuffs:[],
@@ -119,7 +121,7 @@ class Enemy{
 						name:"Stab",
 						damage:4*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
 						damageType:"piercing",
-						desc:"damage to the front hero and 50% chance to inflict 1 bleed",
+						desc:"damage to the front hero and 50% chance to inflict 3 bleed",
 						procs:[
 							{
 								name:"bleed",
@@ -233,6 +235,7 @@ class Enemy{
 					hp:(randHpVal1*(DOUBLEBASEHP.checked?2:1))*(GLOBAL.EnemyScaling.amount*Party.level*0.5),
 					maxHp:(randHpVal1*(DOUBLEBASEHP.checked?2:1))*(GLOBAL.EnemyScaling.amount*Party.level*0.5),
 					armor:0,
+					type:"Mercenary",
 					name:`mercenary ${GLOBAL.EnemiesCreated}`,
 					speed:rand(9,15),
 					resistances:{slashing:rand(30,41)/100,blunt:0,piercing:-(rand(10,16)/100),debuff:0,magic:0,holy:0},
@@ -347,6 +350,7 @@ class Enemy{
 					maxHp:50*(DOUBLEBASEHP.checked?2:1),
 					name:`The Blacksmith ${GLOBAL.EnemiesCreated}`,
 					armor:0,
+					type:"Boss",
 					speed:1,
 					resistances:{slashing:0,blunt:0,piercing:0,debuff:0,magic:0,holy:0},
 					debuffs:[],
@@ -359,7 +363,21 @@ class Enemy{
 							damage:10,
 							damageType:"blunt",
 							desc:"Deal 10 blunt damage to all heros and increase The Blacksmiths speed by 4 permanantly",
-							procs:[],
+							procs:[
+								{
+									name:"speed up",
+									type:"bonus",
+									desc:"+4 speed",
+									procChance:1.0,
+									effect(){
+										GLOBAL.Combat.enemies.forEach((enemy)=>{
+											if(enemy.Stats.type=="Boss"){
+												enemy.Stats.speed+=4;
+											}
+										})
+									}
+								}
+							],
 							procCo:1.0,
 							effect(){
 								this.procs.forEach((proc)=>{
@@ -377,13 +395,15 @@ class Enemy{
 										}
 									}
 								})
-								Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[0]}});
+								Party.Characters.forEach((character, index)=>{
+									Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[index]}});
+								})
 							}
 						},
 					],
 					Hammer_Of_The_Blacksmith:[
 						{
-							name:"The Blacksmith's ",
+							name:"The Blacksmith's Slam",
 							damage:15,
 							damageType:"blunt",
 							desc:"Deal 15 blunt damage to the front hero",
@@ -426,6 +446,7 @@ class Enemy{
 					maxHp:(randHpVal2*(DOUBLEBASEHP.checked?2:1))*(GLOBAL.EnemyScaling.amount*Party.level*0.5),
 					name:`Cultist ${GLOBAL.EnemiesCreated}`,
 					armor:0,
+					type:"Cultist",
 					speed:randSpeedval,
 					resistances:{slashing:-(rand(5,10)/100),blunt:-(rand(10,15)/100),piercing:-(rand(5,10)/100),debuff:0,magic:(rand(10,20)/100),holy:0.5},
 					debuffs:[],
@@ -486,6 +507,7 @@ class Enemy{
 					maxHp:(randHpVal3*(DOUBLEBASEHP.checked?2:1))*(GLOBAL.EnemyScaling.amount*Party.level*0.5),
 					name:`Assassin ${GLOBAL.EnemiesCreated}`,
 					armor:0,
+					type:"Assassin",
 					speed:randSpeedval2,
 					resistances:{slashing:(rand(35,45)/100),blunt:0,piercing:0,debuff:0,magic:0,holy:0},
 					debuffs:[],
@@ -569,6 +591,267 @@ class Enemy{
 				this.AttackPattern=[["Longsword",0],["Longsword",0],["Longsword",1]];
 				this.AttackStage=0;
 				break;
+			case "Treekin":
+				Object.defineProperty(this, "value",{
+					get(){
+						return this;
+					},
+				})
+				this.Stats={
+					hp:(20*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
+					name:`Treekin ${GLOBAL.EnemiesCreated}`,
+					type:"Treekin",
+					maxHp:(20*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
+					armor:3,
+					speed:rand(8,15),
+					resistances:{slashing:-0.1,blunt:0.5,piercing:0.25,debuff:0,magic:0,holy:0},
+					debuffs:[],
+					debuffImmunities:["Bleed"],
+				};
+				this.Actions={
+					"Melee":[
+						{
+							name:"Woodhammer",
+							damage:10*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
+							damageType:"blunt",
+							desc:"damage to the front hero",
+							procs:[],
+							procCo:1.0,
+							effect(){
+								try{
+								Console(`{Amount:${this.damage},Type:${this.damageType},get to(){return ${JSON.stringify(Party.Characters[0].Stats)}}}`)
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+								Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[0]}});
+								}catch(e){Console(e)}
+							}
+							
+						},
+						{
+							name:"Harden shell",
+							damage:0,
+							damageType:null,
+							desc:"Each Treekin gains 2 armor",
+							procs:[
+								{
+									type:"bonus",
+									name:"Armor-up",
+									desc:"Gains armor",
+									procChance:1.0,
+									effect(){
+										GLOBAL.Combat.enemies.forEach((enemy)=>{
+											if(enemy.Stats.type==="Treekin"){
+												enemy.Stats.armor+=2;
+											}
+										})
+									}
+								}
+							],
+							procCo:1.0,
+							effect(){
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+							}
+							
+						}
+					]
+				};
+				this.AttackPattern=[[["Melee",0],["Melee",0],["Melee",1]],[["Melee",0],["Melee",1],["Melee",0]]][rand(0,2)];
+				this.AttackStage=0;
+				break;
+			case "Bandit Leader":
+				Object.defineProperty(this, "value",{
+					get(){
+						return this;
+					},
+				})
+				let randHpVal4=rand(50,65);
+				this.Stats={
+					hp:(randHpVal4*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.6,1),
+					maxHp:(randHpVal4*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.6,1),
+					name:`bandit leader ${GLOBAL.EnemiesCreated}`,
+					armor:0,
+					type:"Bandit Leader",
+					speed:rand(7,15),
+					resistances:{slashing:rand(30,41)/100,blunt:-0.1,piercing:0.1,debuff:0.25,magic:0,holy:0},
+					debuffs:[],
+					debuffImmunities:[],
+				};
+				this.Actions={
+					Rapier:[
+						{
+							name:"Jab",
+							damage:8*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
+							damageType:"piercing",
+							desc:"damage to the front hero and 50% chance to inflict 1 bleed",
+							procs:[
+								{
+									name:"bleed",
+									type:"debuff",
+									procChance:0.50,
+									stacks:1
+								}
+							],
+							procCo:1.0,
+							effect(){
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+								Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[0]}});
+							}
+						},
+						{
+							name:"Stab",
+							damage:10*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
+							damageType:"piercing",
+							desc:"damage to the front hero and 60% chance to inflict 2 bleed",
+							procs:[
+								{
+									name:"bleed",
+									type:"debuff",
+									procChance:0.60,
+									stacks:2
+								}
+							],
+							procCo:1.0,
+							effect(){
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+								Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[0]}});
+							}
+						},
+						{
+							name:"Lunge",
+							damage:12*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
+							get target(){
+								return Party.Characters[1]?Party.Characters[1]:Party.Characters[0];
+							},
+							damageType:"piercing",
+							desc:"damage to the second hero and 50% chance to inflict 4 bleed",
+							procs:[
+								{
+									name:"bleed",
+									type:"debuff",
+									procChance:0.50,
+									stacks:4
+								}
+							],
+							procCo:1.0,
+							effect(){
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+								Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[0]}});
+							}
+						}
+					],
+					Boss:[
+						{
+							name:"Warcry",
+							desc:"All bandits gain +2 speed and +1 armor.",
+							procs:[
+								{
+									type:"bonus",
+									name:"Speed & armor up",
+									desc:"Gains speed and armor",
+									procChance:1.0,
+									effect(){
+										GLOBAL.Combat.enemies.forEach((enemy)=>{
+											if(enemy.Stats.type==="Bandit"){
+												enemy.Stats.speed+=2;
+													enemy.Stats.armor++;
+											}
+										})
+									}
+								}
+							],
+							procCo:1.0,
+							effect(){
+								this.procs.forEach((proc)=>{
+									if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+										if(proc.type==="debuff"){
+											if(proc.condition==undefined){
+												ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+											}else{
+												if(proc.condition){
+													ApplyDebuff(proc.name,Party.Characters[0],proc.stacks);
+												}
+											}
+										}else if(proc.type==="bonus"){
+											proc.effect();
+										}
+									}
+								})
+							}
+						}
+					]
+				}
+				this.AttackPattern=[["Rapier",0],["Rapier",1],["Rapier",2],["Boss",0]];
+				this.AttackStage=0;
+				break;
 		}
 		this.ID=`${GLOBAL.EnemiesCreated}`;
 		this.type=PREDEFINED_ENEMY_TYPE;
@@ -614,7 +897,7 @@ class Chance{
 			this.rolls=[];
 			for(let i=0;i<((adv===0)?1:Math.abs(adv));i++){
 				let val=rand(0,10001)/10000;
-				this.rolls.push({roll:val,pass:(val>=percent)});
+				this.rolls.push({roll:val,pass:(val>=1-percent)});
 			}
 			Console(`rolls for chance ${JSON.stringify(this.rolls)}>=${percent}`,"Rolls")
 			this.succeed=true;
@@ -681,7 +964,7 @@ class Book{
 			let hasFailed=false;
 			books++;
 			for(let maxEnchants=Party.level;maxEnchants>0&&!hasFailed;maxEnchants--){
-				if(new Chance(1-(0.5**(this.Enchants.length)),Party.luck).succeed){
+				if(new Chance((0.5**(this.Enchants.length)),Party.luck).succeed){
 					Console(`adding enchant to book ${books}`);
 					this.Enchants.push(new Enchantment(true).enchant);
 				}else{

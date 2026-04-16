@@ -76,7 +76,7 @@
 				<li id="platinum"></li>
 			</fieldset>
 			<dialog id="inventory_menu">
-				<button id="exit_inventory_button">
+				<button id="exit_inventory_button" class="back_button">
 					back
 				</button><br>
 				<li id="inventory"></li>
@@ -94,7 +94,7 @@
 					<div id="achievements_list">
 						
 					</div>
-					<button id="close_achievements">
+					<button id="close_achievements" class="back_button">
 						Back
 					</button>
 				</fieldset>
@@ -105,7 +105,7 @@
 			<button id="open_achievements_menu">
 				Achievements
 			</button><br>
-			<button id="close_pause_menu">
+			<button id="close_pause_menu" class="back_button">
 				Resume
 			</button>
 		</dialog>
@@ -116,7 +116,7 @@
 			<button class="menu_button" id="stats_button">Stats</button>
 			<dialog id="settings_menu">
 				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label>
-				<button id="close_settings_button">Close</button>
+				<button id="close_settings_button" class="back_button">Close</button>
 			</dialog>
 			<dialog id="options_menu">
 				<button id="starting_weapon_select_button" class="menu_button" disabled>
@@ -127,7 +127,7 @@
 					Difficulty
 				</button>
 				<br>
-				<button id="close_options_menu_button" class="menu_button">
+				<button id="close_options_menu_button" class="back_button">
 					close
 				</button>
 				<dialog id="select_starting_weapon_dialog"></dialog>
@@ -236,17 +236,15 @@
 					<button class="difficulty_preset menu_button_nocenter" id="difficulty_preset_29">
 						To The Max!
 					</button><br>
-					<button id="close_difficulty">
+					<button id="close_difficulty" class="back_button">
 						Close
 					</button>
 					</span>
 				</dialog>
 			</dialog>
 			<dialog id="stats_dialog">
-				<div id="stats">
-					
-				</div>
-				<button id="close_stats_dialog">
+				<div id="stats"></div>
+				<button id="close_stats_dialog" class="back_button">
 					Back
 				</button>
 			</dialog>
@@ -305,8 +303,15 @@
 		<script src="./Scripts/classes.js"></script>
 		<script src="./Scripts/elements.js"></script>
 		<script src="./Scripts/Modding/FunctionsForMods.js"></script>
+		<script src="./Scripts/updateFunctions.js"></script>
 		<script src="./Scripts/functions.js"></script>
 		<script src="./Scripts/debug.js"></script>
+		<script src="./Scripts/localStorage.js"></script>
+		<script src="./Scripts/Party.js"></script>
+		<script src="./Scripts/Characters.js"></script>
+		<script src="./Scripts/Equipment.js"></script>
+		<script src="./Scripts/Events.js"></script>
+		<script src="./Scripts/GLOBAL.js"></script>
 		<script src="./Scripts/variables.js"></script>
 		<script src="./Scripts/events.js"></script>
 		<script src="./Scripts/startup.js"></script>

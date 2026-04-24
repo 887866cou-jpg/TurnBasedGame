@@ -154,7 +154,7 @@ var Equipment={
 				name:"Archer's Cap",
 				desc:"The Dead adventurers cap",
 				equippedTo:0,
-				armor:1,
+				armor:2,
 				modifier:{},
 				Unequip(){
 					Party.Characters[this.equippedTo].Stats.armor-=this.armor
@@ -263,7 +263,37 @@ var Equipment={
 					Party.Characters[character].Equipment.Armor.Feet=this;
 					
 				},
-			}
+			},
+			{
+				name:"Elven boots",
+				desc:"Lightweight leather boots of Evlen make",
+				equippedTo:0,
+				armor:1,
+				modifier:{},
+				Unequip(){
+					Party.Characters[this.equippedTo].Stats.armor-=this.armor
+					Party.Characters[this.equippedTo].Equipment.Armor.Feet={};
+				},
+				Equip(character, custommod){
+					this.equippedTo=character;
+					if(Party.Characters[character].Equipment.Armor.Feet.Unequip){
+						Party.Characters[this.equippedTo].Stats.speed-=1
+						Party.Characters[character].Equipment.Armor.Feet.Unequip();
+					}
+					if(!custommod){
+						Object.assign(this.modifier,Equipment.Armor.randomMod());
+					}else{
+						Object.assign(this.modifier,Equipment.Armor.CustomMod(custommod.name));
+					}
+					if(this.modifier.effect){
+						this.modifier.effect(this);
+					}
+					Party.Characters[this.equippedTo].Stats.armor+=this.armor
+					Party.Characters[this.equippedTo].Stats.speed+=1
+					Party.Characters[character].Equipment.Armor.Feet=this;
+					
+				},
+			},
 		],
 		Hands:[
 			{

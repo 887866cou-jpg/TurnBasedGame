@@ -10,7 +10,7 @@ class Enemy{
 				})
 				this.Stats={
 					hp:(15*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
-					name:`test enemy ${GLOBAL.EnemiesCreated}`,
+					name:`Debuffer ${GLOBAL.EnemiesCreated}`,
 					maxHp:(15*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
 					armor:0,
 					type:"Debuffer",

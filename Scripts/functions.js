@@ -81,7 +81,7 @@ function Damage(damageObject){
 			useArmor: a bool telling the game whether or not to use armor to calulate damage
 		}
 	*/
-	let NumberOfEnemies=GLOBAL.Combat.enemies.length;
+	let NumberOfEnemies=GetTurnOrder().length;
 	error="damage";
 	function DamageWithArmor(){
 		let armorIsDefined=false;
@@ -199,7 +199,7 @@ function Damage(damageObject){
 	enemiesDefeated+=NumberOfEnemies-GLOBAL.Combat.enemies.length;
 	UpdateLocalStorage("enemiesDefeated");
 	if(GetTurnOrder().length-1<GLOBAL.Combat.turn){
-		GLOBAL.Combat.turn--;
+		GLOBAL.Combat.turn=Math.max(GLOBAL.Combat.turn-1,0);
 	}
 	if(Party.Characters.length===0){
 		location.reload();
@@ -432,6 +432,7 @@ function checkToStartBoss(){
 		return false;
 	}else{
 		updateBossDescription(GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].desc);
+		alert("boss");
 		return true;
 	}
 }
@@ -442,7 +443,7 @@ function updateBossDescription(description){
 		BOSSDESC.innerHTML=description;
 		STARTBOSSCOMBAT.addEventListener("click",()=>{
 			GLOBAL.Combat.StartCombat(true,GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].card);
-			GLOBAL.mapNode[0]++;
+			//GLOBAL.mapNode[0]++;
 		})
 	}catch(e){
 		Console(e,"UPDATEBOSSDESC");

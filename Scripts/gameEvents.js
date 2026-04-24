@@ -43,7 +43,23 @@ let Events=[
 						}
 						addAchievement(6);
 					}
-				}
+				},
+				{
+					text:"Leave the strange man to wander, alone...",
+					condition(){
+						return Party.Characters.filter((member)=>member.Stats.name==="Hen Farfield").length==-1;
+					},
+					effect(){
+						Party.reputation+=1;
+						Party.Characters.push(Characters[1]);
+						charactersGotten++;
+						UpdateLocalStorage("charactersGotten");
+						if(!GLOBAL.usingSeed){
+							Events[0]=Events[0].filter((event)=>event.name!=="The Stranger");
+						}
+						addAchievement(6);
+					}
+				},
 			]
 		},
 		{
@@ -488,6 +504,17 @@ let Events=[
 							Events[0]=Events[0].filter((event)=>event.name!=="The Skeleton");
 						}
 						Party.reputation-=10;
+					}
+				},
+				{
+					text:"Move on",
+					condition(){
+						return true;
+					},
+					effect(){
+						if(!GLOBAL.usingSeed){
+							Events[0]=Events[0].filter((event)=>event.name!=="The Skeleton");
+						}
 					}
 				}
 			]

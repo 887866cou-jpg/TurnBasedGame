@@ -128,7 +128,7 @@ NEWGAMEBUTTON.addEventListener("click",()=>{
 OPENACHIEVEMENTS.addEventListener("click",()=>{
 	//Opens the achievements menu
 	GLOBAL.alerts=["achievements",0]
-	ACHIEVEMENTSMENU.show();
+	ACHIEVEMENTSMENU.showModal();
 	UpdateAchievementsDisplay();
 });
 CLOSEACHIEVEMENTS.addEventListener("click",()=>{
@@ -137,11 +137,11 @@ CLOSEACHIEVEMENTS.addEventListener("click",()=>{
 })
 SETTINGSBUTTON.addEventListener("click",()=>{
 	//opens the settings menu
-	SETTINGSMENU.show();
+	SETTINGSMENU.showModal();
 });
 DIFFICULTYBUTTON.addEventListener("click",()=>{
 	//opens the difficulty dialog
-	DIFFICULTYSELECT.show();
+	DIFFICULTYSELECT.showModal();
 })
 CLOSEDIFFICULTYBUTTON.addEventListener("click",()=>{
 	//Closes the difficulty dialog
@@ -161,7 +161,7 @@ CLOSEOPTIONSMENUBUTTON.addEventListener("click",()=>{
 });
 OPTIONSBUTTON.addEventListener("click",()=>{
 	//Opens the options menu
-	OPTIONSDIALOG.show();
+	OPTIONSDIALOG.showModal();
 })
 EASYPATH.addEventListener("click",()=>{
 	//Starts the easy combat
@@ -191,7 +191,7 @@ INVENTORYBUTTON.addEventListener("click",()=>{
 	GLOBAL.alerts=["inventory",0]
 	INVENTORYBUTTON.innerHTML="Inventory";
 	updateInventory();
-	INVENTORYMENU.show();
+	INVENTORYMENU.showModal();
 });
 STATSBUTTON.addEventListener("click",()=>{
 	//Opens and updates the stats display
@@ -208,7 +208,7 @@ SETTINGS_ATTACKINTERVAL.addEventListener("change",(event)=>{
 });
 PAUSEBUTTON.addEventListener("click",()=>{
 	UpdatePauseScreen();
-	PAUSEMENU.show();
+	PAUSEMENU.showModal();
 })
 document.addEventListener("keydown",(event)=>{
 	if(!GLOBAL.KeysPressed.includes(event.keyCode)){
@@ -248,7 +248,7 @@ document.addEventListener("keyup",(event)=>{
             STARTINGWEAPONSELECTBUTTON.disabled=false;
         }else if(event.keyCode===27){
 			UpdatePauseScreen();
-			PAUSEMENU.show();
+			PAUSEMENU.showModal();
 		}
 		
         if(CONSOLEINPUT.value[0]==="/"){
@@ -292,4 +292,11 @@ STARTINGWEAPONSELECTBUTTON.addEventListener("click",()=>{
 	SELECTSTARTINGWEAPONDIALOG.show();
 	MakeStartingWeaponSelect();
 });
+CHANGELOGBUTTON.addEventListener("click",()=>{
+	CHANGELOGDIALOG.show();
+	makeChangelog();
+})
+CLOSECHANGELOGBUTTON.addEventListener("click",()=>{
+	CHANGELOGDIALOG.close();
+})
 Console("Turn based game/Scripts/events.js loaded");

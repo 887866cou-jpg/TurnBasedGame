@@ -11,6 +11,7 @@ var Party={
 		}
 	},
 	get Alignment(){
+		//Split this up more maybe.
 		if(this.reputationPercent<0.1){
 			return {name:"Demonic",value:-2};
 		}else if(this.reputationPercent>=0.1&&this.reputationPercent<0.4){

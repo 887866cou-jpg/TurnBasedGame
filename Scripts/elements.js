@@ -15,6 +15,7 @@ const DOC=document;
 	const STATSBUTTON=DOC.getElementById("stats_button");
 	const STARTBOSSCOMBAT=DOC.getElementById("boss_button");
 	const INFOBUTTON=DOC.getElementById("info_button");
+	const CHANGELOGBUTTON=DOC.getElementById("changelog_button");
 	//Buttons to close dialogs
 		const CLOSEOPTIONSMENUBUTTON=DOC.getElementById("close_options_menu_button");
 		const CLOSESETTINGSBUTTON=DOC.getElementById("close_settings_button");
@@ -22,6 +23,7 @@ const DOC=document;
 		const EXITINVENTORYBUTTON=DOC.getElementById("exit_inventory_button");
 		const CLOSEDIFFICULTYBUTTON=DOC.getElementById("close_difficulty");
 		const CLOSESTATSDIALOG=DOC.getElementById("close_stats_dialog");
+		const CLOSECHANGELOGBUTTON=DOC.getElementById("close_changelog_button");
 //dialogs
 const MENUDIALOG=DOC.getElementById("menu_screen");
 const FIGHTDIALOG=DOC.getElementById("fight_dialog");
@@ -37,7 +39,7 @@ const PAUSEMENU=DOC.getElementById("pause_menu");
 const ACHIEVEMENTSMENU=DOC.getElementById("achievements_menu");
 const INVENTORYMENU=DOC.getElementById("inventory_menu");
 const STATSDIALOG=DOC.getElementById("stats_dialog");
-
+const CHANGELOGDIALOG=DOC.getElementById("changelog_dialog")
 //settings
 const FONTSELECT=DOC.getElementById("select_font");
 const SETTINGS_ATTACKINTERVAL=DOC.getElementById("attack_interval_setting");
@@ -91,4 +93,5 @@ const MOSTRECENTACHIEVEMENT=DOC.getElementById("most_recent_achievement");
 const NORMALCOMBAT=DOC.getElementById("normal_combat");
 const BOSSCOMBAT=DOC.getElementById("boss_combat");
 const BOSSDESC=DOC.getElementById("boss_desc");
+const CHANGELOG=DOC.getElementById("changelog");
 Console("Turn based game/Scripts/elements.js loaded");

@@ -113,7 +113,8 @@
 			<button class="menu_button" id="start_button">New Game</button><br>
 			<button class="menu_button" id="settings_button">Settings</button><br>
 			<button class="menu_button" id="options_button">Options</button><br>
-			<button class="menu_button" id="stats_button">Stats</button>
+			<button class="menu_button" id="stats_button">Stats</button><br>
+			<button class="menu_button" id="changelog_button">Changelog</button>
 			<dialog id="settings_menu">
 				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label>
 				<button id="close_settings_button" class="back_button">Close</button>
@@ -248,6 +249,14 @@
 					Back
 				</button>
 			</dialog>
+			<dialog id="changelog_dialog">
+				<div id="changelog">
+					
+				</div>
+				<button id="close_changelog_button" class="back_button">
+					Back
+				</button>
+			</dialog>
 		</dialog>
 		<dialog id="fight_dialog">
 			<div id="player">
@@ -300,6 +309,7 @@
 				</ol>
 			</div>
 		</dialog>
+		<script src="./Scripts/Changelog.js"></script>
 		<script src="./Scripts/classes.js"></script>
 		<script src="./Scripts/elements.js"></script>
 		<script src="./Scripts/Modding/FunctionsForMods.js"></script>

@@ -96,10 +96,15 @@ dialog{
 	width:95%;
 	position:absolute;
 	top:10px;
-	margin:0;
 	padding:0;
 	object-position:center;
 	border-radius:1%;
+}
+dialog::backdrop{
+	background-color: black;
+}
+#changelog_dialog{
+	padding-right:50px;
 }
 #hp{
 	font-size:150%;

@@ -64,7 +64,7 @@ let Events=[
 		},
 		{
 			name:"Exiled Alchemist",
-			text:`A disheveled and dirty figure in a tattered robe approaches you from the woods. You can't see his face, but you can almost feel it's piercing gaze. The figure porcures a mysterious liquid from it's coat and rasps "Pleeaase, take one." `,
+			text:`A disheveled and dirty figure in a tattered robe approaches you from the woods. You can't see his face, but you can almost feel it's piercing gaze. The figure procures a mysterious liquid from it's coat and rasps, "Pleeaase, take one." `,
 			options:[
 				{
 					text:"Take the mysterious potion",

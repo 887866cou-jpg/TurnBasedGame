@@ -612,6 +612,65 @@ let GLOBAL={
 							}
 						}
 					}
+				},
+				//Zone 2
+				{
+					name:"The Withering Planes",
+					desc:"As you walk out of the forest, you come to find yourself in a place only spoken of to scare little children from going out too far into bad land;<br>But those stories aren't entirely made up, as you can clearly tell from what is in front of you:<br>A vast green sea of thick tall deep green grass, with hardly a tree in sight.<br>In the few patches around you with no grass, you can see that the soil is an unnatural black color with roots, covering almost half of the dirt that you can see; Wrapping around it, as if trying to choke whatever life is left out of it,<br>and as grey as the smoldering ashes of your childhood home...<br><b>Welcome To: The Withering Planes.<b>",
+					cards:[
+						{
+							easy:[
+								["Debuffer","Bandit"],//encounters
+								["Bandit","Cultist"]
+							],
+							hard:[
+								["Debuffer","Bandit","Bandit"],
+								["Bandit","Bandit","Cultist"]
+							]
+						},
+						//Level 2
+						{
+							easy:[
+								["Bandit","Bandit"],//encounters
+								["Bandit","Cultist"]
+							],
+							hard:[
+								["Bandit","Debuffer","Bandit"],
+								["Bandit","Bandit","Cultist"]
+							]
+						},
+						{
+							easy:[
+								["Debuffer","Bandit","Bandit"],//encounters
+								["Bandit","Bandit","Cultist"]
+							],
+							hard:[
+								["Mercenary","Bandit","Assassin"],
+								["Mercenary","Bandit","Cultist"],
+							]
+						}
+					],
+					bosses:[
+						{
+							card:[],
+							description:""
+						}
+					],
+					Card(prop, level){
+						if(!level){
+							if(this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length>1){
+								return this.cards[Math.min(Party.level-1,this.cards.length-1)][prop][rand(0,this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length)]
+							}else{
+								return this.cards[Math.min(Party.level-1,this.cards.length-1)][prop][0];
+							}
+						}else{
+							if(this.cards[Math.min(level-1,this.cards.length-1)][prop].length>1){
+								return this.cards[Math.min(level-1,this.cards.length-1)][prop][rand(0,this.cards[Math.min(level-1,this.cards.length-1)][prop].length)]
+							}else{
+								return this.cards[Math.min(level-1,this.cards.length-1)][prop][0];
+							}
+						}
+					}
 				}
 			]
 		},
@@ -692,6 +751,7 @@ let GLOBAL={
 			checkToStartBoss();
 			Party.Characters.forEach((character)=>{
 				character.Stats.debuffs=[];
+				character.Stats.buffs=[];
 			})
 			let chanceValue=rand(0,100);
 			if(Party.Characters.findIndex((character)=>character.name==="Glum Farfield")===-1&&GLOBAL.Combat.fights>=3){

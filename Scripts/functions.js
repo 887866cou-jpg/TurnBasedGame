@@ -31,6 +31,33 @@ function TriggerDebuffs(STARTOREND) {
 	}
 	}catch(e){Console(e+error)}
 }
+function TriggerBuffs(STARTOREND) {
+	error="bufftrigger";
+	try{
+		//Console(`Turn ${JSON.stringify(GetTurnOrder()[GLOBAL.Combat.turn])}`)
+	if(GetTurnOrder()[GLOBAL.Combat.turn]){
+		if(GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs){
+			error+=1;
+			GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs.forEach((buff)=>{
+				error+=1;
+				if(buff.triggerTime==STARTOREND){
+					if(buff.effect){
+						buff.effect();
+					}
+					Console(`${buff.name} triggered on ${buff.target.Stats.name}`, "TRIGGERDEBUFFS");
+				}
+			})
+			error+=1;
+			GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs.filter((buff)=>buff.stacks<=0).forEach((buff)=>{
+				if(buff.OnRemoval){
+					buff.OnRemoval();
+				}
+			})
+			GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs=GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs.filter((buff)=>buff.stacks>0);
+		}
+	}
+	}catch(e){Console(e+error)}
+}
 function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 	error="applydebuff"
 	try{
@@ -426,6 +453,26 @@ function MakeEvent(eventID){
 	EVENTDIALOG.show();
 	}catch(e){Console(e+error)}
 }
+function MakeZoneDescription(zoneID){
+	error=" event"
+	try{
+	EVENTDIALOG.innerHTML="";
+	const NEWZONETITLE=DOC.createElement("h1");
+	NEWZONETITLE.innerHTML=GLOBAL.Combat.SpawnCard.Zone[zoneID].name;
+	const NEWZONETEXT=DOC.createElement("p")
+	NEWZONETEXT.innerHTML=GLOBAL.Combat.SpawnCard.Zone[zoneID].desc;
+	EVENTDIALOG.appendChild(NEWZONETITLE);
+	EVENTDIALOG.appendChild(NEWZONETEXT);
+	const ZONEOPTION=DOC.createElement("button");
+	ZONEOPTION.innerHTML="Continue on...";
+	ZONEOPTION.addEventListener("click",()=>{
+		EVENTDIALOG.close();
+	});
+	EVENTDIALOG.appendChild(DOC.createElement("br"));
+	EVENTDIALOG.appendChild(ZONEOPTION);
+	EVENTDIALOG.show();
+	}catch(e){Console(e+error)}
+}
 function checkToStartBoss(){
 	if(GLOBAL.Combat.fights/(GLOBAL.mapNode[0]+1)<ReadSeed(GLOBAL.seed).numberOfCombats){
 		Console("No Boss");
@@ -443,7 +490,8 @@ function updateBossDescription(description){
 		BOSSDESC.innerHTML=description;
 		STARTBOSSCOMBAT.addEventListener("click",()=>{
 			GLOBAL.Combat.StartCombat(true,GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].card);
-			//GLOBAL.mapNode[0]++;
+			GLOBAL.mapNode[0]++;
+			MakeZoneDescription(GLOBAL.mapNode[0]);
 		})
 	}catch(e){
 		Console(e,"UPDATEBOSSDESC");
@@ -709,6 +757,7 @@ function CheckForDeath(){
 }
 function PassTurn(){
 	try{
+	TriggerBuffs(1)
 	TriggerDebuffs(1);
 	TriggerEndOfTurnEffects();
 	GLOBAL.Combat.turn++;
@@ -716,6 +765,7 @@ function PassTurn(){
 		GLOBAL.Combat.turn=0;
 		GLOBAL.Combat.round++;
 	}
+	TriggerBuffs(0);
 	TriggerDebuffs(0);
 	error="1";
 	UpdateTurnOrder(true);

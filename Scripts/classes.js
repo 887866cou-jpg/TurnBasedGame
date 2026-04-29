@@ -852,6 +852,70 @@ class Enemy{
 				this.AttackPattern=[["Rapier",0],["Rapier",1],["Rapier",2],["Boss",0]];
 				this.AttackStage=0;
 				break;
+			case "Strix":
+				Object.defineProperty(this, "value",{
+					get(){
+						return this;
+					},
+				})
+				this.Stats={
+					hp:(20*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
+					name:`Strix ${GLOBAL.EnemiesCreated}`,
+					type:"Strix",
+					maxHp:(20*(DOUBLEBASEHP.checked?2:1))*Math.max(GLOBAL.EnemyScaling.amount*Party.level*0.5,1),
+					armor:3,
+					speed:rand(8,15),
+					resistances:{slashing:-0.1,blunt:0.5,piercing:0.25,debuff:0,magic:0,holy:0},
+					debuffs:[],
+					debuffImmunities:["Bleed"],
+				};
+				this.Actions={
+					"Claw":[
+						{
+							name:"Scrape",
+							damage:10*Math.max(GLOBAL.EnemyScaling.amount*Party.level*GLOBAL.EnemyDamageMult,1),
+							damageType:"slashing",
+							desc:"damage to each hero",
+							procs:[
+								{
+									name:"bleed",
+									type:"debuff",
+									procChance:0.50,
+									stacks:4
+								}
+							],
+							procCo:1.0,
+							effect(){
+								try{
+								Console(`{Amount:${this.damage},Type:${this.damageType},get to(){return ${JSON.stringify(Party.Characters[0].Stats)}}}`)
+								this.procs.forEach((proc)=>{
+									Party.Characters.forEach((character,index)=>{
+										if(new Chance(proc.procChance*this.procCo,-Party.luck).succeed){
+											if(proc.type==="debuff"){
+												if(proc.condition==undefined){
+													ApplyDebuff(proc.name,Party.Characters[index],proc.stacks);
+												}else{
+													if(proc.condition){
+														ApplyDebuff(proc.name,Party.Characters[index],proc.stacks);
+													}
+												}
+											}else if(proc.type==="bonus"){
+												proc.effect();
+											}
+										}
+									})
+								});
+								Party.Characters.forEach((character,index)=>{
+									Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[index]}});
+								})
+								}catch(e){Console(e)}
+							}
+						},
+					]
+				};
+				this.AttackPattern=[[["Melee",0],["Melee",0],["Melee",1]],[["Melee",0],["Melee",1],["Melee",0]]][rand(0,2)];
+				this.AttackStage=0;
+				break;
 		}
 		this.ID=`${GLOBAL.EnemiesCreated}`;
 		this.type=PREDEFINED_ENEMY_TYPE;

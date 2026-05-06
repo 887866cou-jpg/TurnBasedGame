@@ -329,7 +329,7 @@ var Party={
 						cost:1,
 						desc:"damage to the front enemy",
 						effect(){
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}});
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]},from:Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Hen Farfield")]});
 						}
 					},
 					{

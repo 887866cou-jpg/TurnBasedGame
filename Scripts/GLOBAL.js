@@ -223,7 +223,12 @@ let GLOBAL={
 					Amount:this.stacks,
 					Type: "debuff",
 					to:this.target,
-					useArmor: false
+					useArmor: false,
+					from:{
+						Stats:{
+							name:"bleed"
+						}
+					}
 				}
 			},
 			assign(to,stack){
@@ -257,6 +262,11 @@ let GLOBAL={
 					Type: "debuff",
 					to:this.target,
 					useArmor: false,
+					from:{
+						Stats:{
+							name:"poison"
+						}
+					}
 				}
 			},
 			assign(to,stack){
@@ -439,6 +449,11 @@ let GLOBAL={
 					Type: "fire",
 					to:this.target,
 					useArmor: false,
+					from:{
+						Stats:{
+							name:"burn"
+						}
+					}
 				}
 			},
 			assign(to,stack){
@@ -620,35 +635,12 @@ let GLOBAL={
 					cards:[
 						{
 							easy:[
-								["Debuffer","Bandit"],//encounters
-								["Bandit","Cultist"]
+								["Strix","Strix","Strix"],//encounters
 							],
 							hard:[
-								["Debuffer","Bandit","Bandit"],
-								["Bandit","Bandit","Cultist"]
+								["Strix","Strix","Strix","Strix"]
 							]
 						},
-						//Level 2
-						{
-							easy:[
-								["Bandit","Bandit"],//encounters
-								["Bandit","Cultist"]
-							],
-							hard:[
-								["Bandit","Debuffer","Bandit"],
-								["Bandit","Bandit","Cultist"]
-							]
-						},
-						{
-							easy:[
-								["Debuffer","Bandit","Bandit"],//encounters
-								["Bandit","Bandit","Cultist"]
-							],
-							hard:[
-								["Mercenary","Bandit","Assassin"],
-								["Mercenary","Bandit","Cultist"],
-							]
-						}
 					],
 					bosses:[
 						{
@@ -675,6 +667,7 @@ let GLOBAL={
 			]
 		},
 		StartCombat(RANDENEMIES,ENEMYOBJECTS_OR_ENEMYTYPES){
+			Console("<hr> New combat","COMBATLOG");
 			try{
 				this.fights++;
 				battles++;
@@ -749,20 +742,37 @@ let GLOBAL={
 			GLOBAL.Combat.round=0;
 			GLOBAL.Combat.turn=0;
 			checkToStartBoss();
+			LOG.innerHTML="";
+			combatLogOutput=[];
 			Party.Characters.forEach((character)=>{
 				character.Stats.debuffs=[];
 				character.Stats.buffs=[];
-			})
+			});
+			Party.money.gain("copper",GLOBAL.Combat.fights);
+			Party.money.gain("silver",rand(0,GLOBAL.Combat.fights));
+			Party.money.gain("gold",Math.floor(GLOBAL.Combat.fights/10));
+			UpdateMoney();
+			if(GLOBAL.mapNode[0]===0&&new Chance(0.25,Party.luck,"enchanted book").succeed){
+				Console(`You got a new book!`)
+				giveRandomBook();
+			}
 			let chanceValue=rand(0,100);
 			if(Party.Characters.findIndex((character)=>character.name==="Glum Farfield")===-1&&GLOBAL.Combat.fights>=3){
 				MakeEvent(1);
 			}else{
 				if(chanceValue<50){
+					let ArmorOrWeapons=rand(1,10);
 					//make it random equipment when I figure that out
 					MakeEquipChoice(rand(2,4));
 					EQUIPDIALOG.show();
 				}else if(chanceValue>=50){
-					MakeEvent(rand(0,Events.length-1));
+					let eventVal=rand(0,Events[GLOBAL.mapNode[0]].length)
+					Console(`event value: ${eventVal}`);
+					if(Events[GLOBAL.mapNode[0]][eventVal]){
+						MakeEvent(eventVal);
+					}else{
+						MakeEvent(0)
+					}
 				}
 			}
 		}

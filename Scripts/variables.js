@@ -6,6 +6,10 @@ let gameStarted=false;
 let awaitingLevelUp=false;
 let consoleLines=0;
 let consoleOutput=[];
+let combatLogOutput=[];
+let combatLogMessages=0;
+let activeMessages=0;
+let combatLog=0;
 let notifications={
 	inventory:false,
 	achivements:false,

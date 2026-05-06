@@ -4,8 +4,8 @@ REPUTATION.innerHTML=`Reputation ${Party.Alignment.name} (${Party.reputationPerc
 //Party.Characters.push(Characters[2]);
 //MakeEvent(3)
 //localStorage.clear()
-Console("Turn based game/Scripts/startup.js loaded");
-Console(Object.values(Party.Characters[0].Stats).filter((stat)=>typeof stat=="number").average())
+//Console("Turn based game/Scripts/startup.js loaded");
+//Console(Object.values(Party.Characters[0].Stats).filter((stat)=>typeof stat=="number").average())
 SETTINGS_ATTACKINTERVAL.value=settings.Other.Attack_interval_delay;
 padSelectedDifficulty();
 GLOBAL.seed=MakeSeed();
@@ -15,3 +15,4 @@ ReadSeed(GLOBAL.seed).EventNames.forEach((zoneEvents,zoneIndex)=>{
         Console(`Zone ${zoneIndex} Event: ${eventName}`);
     })
 })
+VERSION.innerHTML=`v${findCurrentVersion().join(".")}`;

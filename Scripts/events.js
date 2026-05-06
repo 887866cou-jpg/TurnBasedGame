@@ -299,4 +299,14 @@ CHANGELOGBUTTON.addEventListener("click",()=>{
 CLOSECHANGELOGBUTTON.addEventListener("click",()=>{
 	CHANGELOGDIALOG.close();
 })
+COMBATLOGBUTTON.addEventListener("click",(event)=>{
+	combatLog=Math.abs(combatLog-1);
+	if(combatLog){
+		COMBATLOGDIALOG.show();
+		event.target.innerHTML="Hide Combat Log";
+	}else{
+		COMBATLOGDIALOG.close();
+		event.target.innerHTML="Show Combat Log";
+	}
+});
 Console("Turn based game/Scripts/events.js loaded");

@@ -193,7 +193,7 @@ function UpdateEnemyStatDisplay(index){
 				stats.push(`${key}: ${debuffs.join(",")}`);
 			}
 		}
-		stats.push(`This enemy intends to:Deal ${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damage} ${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damageType} ${JSON.stringify(GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].desc)}`)
+		stats.push(`This enemy intends to:${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damage?`Deal ${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damage}${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damageType}`:``} ${JSON.stringify(GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].desc)}`)
 		Array.from(ENEMYSTATS)[index].innerHTML=`<p>${stats.join(`</p>\n<p>`)}</p>`;
 	}
 	}catch(e){PrintToConsole(e+error)}
@@ -227,39 +227,7 @@ function UpdateEnemyDisplay(){
 			ENEMYSELECT.appendChild(ENEMYBUTTON);
 		});
 	}else{
-		FIGHTDIALOG.close();
-		GLOBAL.Combat.round=0;
-		GLOBAL.Combat.turn=0;
-		Party.Characters.forEach((character)=>{
-			character.Stats.debuffs=[];
-		})
-		let chanceValue=rand(0,100);
-		if(Party.Characters.findIndex((character)=>character.name==="Glum Farfield")===-1&&GLOBAL.Combat.fights>=3){
-			MakeEvent(1);
-		}else{
-			Party.money.gain("copper",GLOBAL.Combat.fights);
-			Party.money.gain("silver",rand(0,GLOBAL.Combat.fights));
-			Party.money.gain("gold",Math.floor(GLOBAL.Combat.fights/10));
-			UpdateMoney();
-			if(GLOBAL.mapNode[0]===0&&new Chance(0.25,Party.luck).succeed){
-				Console(`You got a new book!`)
-				giveRandomBook();
-			}
-			if(chanceValue<50){
-				let ArmorOrWeapons=rand(1,10);
-				//make it random equipment when I figure that out
-				MakeEquipChoice(rand(2,4));
-				EQUIPDIALOG.show();
-			}else if(chanceValue>=50){
-				let eventVal=rand(0,Events[GLOBAL.mapNode[0]].length)
-				Console(`event value: ${eventVal}`);
-				if(Events[GLOBAL.mapNode[0]][eventVal]){
-					MakeEvent(eventVal);
-				}else{
-					MakeEvent(0)
-				}
-			}
-		}
+		GLOBAL.Combat.EndCombat();
 	}
 	}catch(e){Console(e+error)}
 }
@@ -340,7 +308,7 @@ function UpdateCharacterDisplay(index){
 					}
 				})
 				CHARACTERABILITYBUTTON.addEventListener("click",()=>{
-					if(Party.Characters[index].Stats.stamina-element.cost>=0){
+					if(Party.Characters[index].Stats.stamina<=0-element.cost>=0){
 						Party.Characters[index].Stats.stamina-=element.cost;
 						actionsTaken++;
 						UpdateLocalStorage("actionsTaken");
@@ -376,6 +344,12 @@ function UpdateCharacterDisplay(index){
 						}
 						element.effect();
 						UpdateStatDisplay(index);
+						if(AUTOPASS.checked){
+							if(Party.Characters[index].Stats.stamina<=0){
+								PassTurn();
+								Console("Auto-Passed turn","AUTOPASSER");
+							}
+						}
 					}
 					Array.from(DOC.getElementsByClassName("character_ability")).forEach((ability)=>{
 						ability.checkAbility();

@@ -16,6 +16,7 @@ const DOC=document;
 	const STARTBOSSCOMBAT=DOC.getElementById("boss_button");
 	const INFOBUTTON=DOC.getElementById("info_button");
 	const CHANGELOGBUTTON=DOC.getElementById("changelog_button");
+	const COMBATLOGBUTTON=DOC.getElementById("combat_log_opener");
 	//Buttons to close dialogs
 		const CLOSEOPTIONSMENUBUTTON=DOC.getElementById("close_options_menu_button");
 		const CLOSESETTINGSBUTTON=DOC.getElementById("close_settings_button");
@@ -39,10 +40,12 @@ const PAUSEMENU=DOC.getElementById("pause_menu");
 const ACHIEVEMENTSMENU=DOC.getElementById("achievements_menu");
 const INVENTORYMENU=DOC.getElementById("inventory_menu");
 const STATSDIALOG=DOC.getElementById("stats_dialog");
-const CHANGELOGDIALOG=DOC.getElementById("changelog_dialog")
+const CHANGELOGDIALOG=DOC.getElementById("changelog_dialog");
+const COMBATLOGDIALOG=DOC.getElementById("combat_log");
 //settings
 const FONTSELECT=DOC.getElementById("select_font");
 const SETTINGS_ATTACKINTERVAL=DOC.getElementById("attack_interval_setting");
+const AUTOPASS=DOC.getElementById("auto_pass");
 
 //difficulties
 const DIFFICULTY_CHECKS=DOC.getElementsByClassName("difficulties");
@@ -94,4 +97,6 @@ const NORMALCOMBAT=DOC.getElementById("normal_combat");
 const BOSSCOMBAT=DOC.getElementById("boss_combat");
 const BOSSDESC=DOC.getElementById("boss_desc");
 const CHANGELOG=DOC.getElementById("changelog");
+const LOG=DOC.getElementById("log")
+const VERSION=DOC.getElementById("version")
 Console("Turn based game/Scripts/elements.js loaded");

@@ -444,6 +444,7 @@ var Equipment={
 						critChance:0.01,
 						procs:[],
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -459,7 +460,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -480,6 +480,7 @@ var Equipment={
 							}
 						],
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -495,7 +496,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -548,6 +548,7 @@ var Equipment={
 						critChance:0.01,
 						procCo:1.0,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -563,7 +564,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -584,6 +584,7 @@ var Equipment={
 						],
 						procCo:1.0,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -599,7 +600,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -659,6 +659,7 @@ var Equipment={
 						],
 						procCo:0.6,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -674,7 +675,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -701,6 +701,7 @@ var Equipment={
 						],
 						procCo:0.6,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -716,7 +717,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -737,6 +737,7 @@ var Equipment={
 						],
 						procCo:0.6,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -752,7 +753,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -805,7 +805,7 @@ var Equipment={
 						procs:[],
 						procCo:1.5,
 						effect(){
-							GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((s)=>s.Stats.target)].Stats.resistances.blunt-=0.05;
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((s)=>s.Stats.target)].Stats.resistances.blunt-=0.05;
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -821,7 +821,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -842,6 +841,7 @@ var Equipment={
 						],
 						procCo:1.5,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -857,7 +857,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -910,6 +909,7 @@ var Equipment={
 						procs:[],
 						procCo:1.0,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -925,7 +925,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -939,6 +938,7 @@ var Equipment={
 						procs:[],
 						procCo:1.0,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -954,7 +954,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -1007,6 +1006,7 @@ var Equipment={
 						procs:[],
 						procCo:1.25,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((s)=>s.Stats.target)].Stats.resistances.piercing-=0.05;
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
@@ -1023,7 +1023,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -1037,6 +1036,7 @@ var Equipment={
 						procs:[],
 						procCo:1.25,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -1052,7 +1052,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 					
@@ -1106,6 +1105,7 @@ var Equipment={
 						procs:[],
 						procCo:1.25,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -1121,7 +1121,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -1135,6 +1134,7 @@ var Equipment={
 						procs:[],
 						procCo:1.25,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -1150,7 +1150,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]
@@ -1210,6 +1209,7 @@ var Equipment={
 						],
 						procCo:1.0,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -1225,7 +1225,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					},
 					{
@@ -1246,6 +1245,7 @@ var Equipment={
 						],
 						procCo:1,
 						effect(){
+							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance,});
 							this.procs.forEach((proc)=>{
 								if(new Chance(proc.procChance*this.procCo,Party.luck).succeed){
 									if(proc.type==="debuff"){
@@ -1261,7 +1261,6 @@ var Equipment={
 									}
 								}
 							})
-							Damage({Amount:this.damage,Type:this.damageType,get to(){return GLOBAL.Combat.enemies[GLOBAL.Combat.enemies.findIndex((thing)=>thing.Stats.target===true)]}, crit:this.critChance});
 						}
 					}
 				]

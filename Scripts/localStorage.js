@@ -28,6 +28,7 @@ var moneyGained=JSON.parse(localStorage.getItem("moneyGained"))??{
 var amountHealed=JSON.parse(localStorage.getItem("amountHealed"))??0;
 var totalXpGained=JSON.parse(localStorage.getItem("totalXpGained"))??0;
 var presetsBeaten=JSON.parse(localStorage.getItem("presetsBeaten"))??[];
+var timePlayed=JSON.parse(localStorage.getItem("timePlayed"))??0;
 function findTotalLevel(){
 	let output=1;
 	for(let remainingXp=totalXpGained;output*10<remainingXp;remainingXp-=output*10){

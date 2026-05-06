@@ -66,7 +66,7 @@ function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 		
 	}else{
 		error+=1;
-		Console(`applying ${STACK} ${DEBUFFNAME} to ${TO.Stats.name}`)
+		Console(`applying ${STACK} ${DEBUFFNAME} to ${TO.Stats.name}`,"COMBATLOG")
 		error+=1;
 		if(TO.Stats.debuffImmunities.includes(DEBUFFNAME)){
 			Console(`${TO.Stats.name} has an immunity to ${DEBUFFNAME}, ${DEBUFFNAME} not applied`, "DEBUFF.IMMUNITY");
@@ -96,6 +96,49 @@ function ApplyBuff(BUFFNAME,TO,STACK,CHANCE){
 	}
 	}catch(e){PrintToConsole(`${e} (${error}, values: ${JSON.stringify(arguments)})`)}
 }
+function findDamage(damageObject){
+	//PrintToConsole(JSON.stringify(damageObject.to));
+	/*Damage object format
+		{
+			Amount: the amount of damage you want to be dealt
+			to: the object to deal the damage to
+			Type: the type of damage being dealt
+			crit: the chance that the damage will crit.
+			useArmor: a bool telling the game whether or not to use armor to calulate damage
+			from: the object dealing the damage
+			using: the action used to deal the damage.
+		}
+	*/
+	let NumberOfEnemies=GetTurnOrder().length;
+	error="finddamage";
+	function DamageWithArmor(){
+		let armorIsDefined=false;
+		if(damageObject.useArmor){
+			armorIsDefined=true;
+		}
+		if((!armorIsDefined||damageObject.useArmor)){
+			return (damageObject.Amount-damageObject.Amount*calculateDamageReduction(damageObject.to.Stats.armor));
+		}else if(!damageObject.useArmor){
+			return damageObject.Amount;
+		}
+		
+	}
+	//this line is causing an error
+	let damageAmount=0;
+	if(damageObject.crit!==undefined){
+		if(new Chance(damageObject.crit,1,"Crit").succeed){
+			//Console(`${damageObject.from?`${damageObject.from.Stats.name} `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} dealt ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2} (CRIT!) ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG");
+			damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2
+		}else{
+			//Console(`${damageObject.from?`${damageObject.from.Stats.name} used `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} dealt ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG")
+			damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0);
+		}
+	}else{
+		//Console(`${damageObject.from?`${damageObject.from.Stats.name} `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG")
+		damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)
+	}
+	return damageAmount;
+}
 function Damage(damageObject){
 	//PrintToConsole(JSON.stringify(damageObject.to));
 	try{
@@ -106,6 +149,8 @@ function Damage(damageObject){
 			Type: the type of damage being dealt
 			crit: the chance that the damage will crit.
 			useArmor: a bool telling the game whether or not to use armor to calulate damage
+			from: the object dealing the damage
+			using: the action used to deal the damage.
 		}
 	*/
 	let NumberOfEnemies=GetTurnOrder().length;
@@ -125,18 +170,18 @@ function Damage(damageObject){
 	//this line is causing an error
 	let damageAmount=0;
 	if(damageObject.crit!==undefined){
-		if(new Chance(damageObject.crit,1).succeed){
+		if(new Chance(damageObject.crit,1,"Crit").succeed){
 			addAchievement(55);
-			Console(`${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2} (CRIT!) ${damageObject.Type} damage, dealt to ${damageObject.to.Stats.name}`)
+			Console(`${damageObject.from?`${damageObject.from.Stats.name} `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} dealt ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2} (CRIT!) ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG");
 			damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)*2
 			damageObject.to.Stats.hp-=damageAmount;
 		}else{
-			Console(`${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, dealt to ${damageObject.to.Stats.name}`)
+			Console(`${damageObject.from?`${damageObject.from.Stats.name} used `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} dealt ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG")
 			damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0);
 			damageObject.to.Stats.hp-=damageAmount;
 		}
 	}else{
-		Console(`${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, dealt to ${damageObject.to.Stats.name}`)
+		Console(`${damageObject.from?`${damageObject.from.Stats.name} `:``}${damageObject.using?`used ${damageObject.using.name} dealing`:` dealt`} ${Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)} ${damageObject.Type} damage, to ${damageObject.to.Stats.name}`,"COMBATLOG")
 		damageAmount=Math.max(DamageWithArmor()-DamageWithArmor()*(damageObject.to.Stats.resistances[damageObject.Type]??0),0)
 		damageObject.to.Stats.hp-=damageAmount;
 	}
@@ -242,31 +287,35 @@ function heal(healObj){
 			isPercent: (bool) if the amount being healed is a percent
 		}
 	*/
+	let actualAmountHealed=0;
 	if(healObj.isPercent){
-		if(healObj.to.Stats.hp+(healObj.to.Stats.maxHp*healObj.amount)<=healObj.to.Stats.maxHp&&Party.Characters.includes(healObj.to)){
-			amountHealed+=(healObj.to.Stats.maxHp*healObj.amount);
+		if(healObj.to.Stats.hp+(healObj.to.Stats.maxHp*healObj.amount)<=healObj.to.Stats.maxHp){
+			Console("case 1");
+			actualAmountHealed=(healObj.to.Stats.maxHp*healObj.amount)
 		}else{
-			amountHealed+=(healObj.to.Stats.maxHp*healObj.amount)-((healObj.to.Stats.hp+(healObj.to.Stats.maxHp*healObj.amount))-healObj.to.Stats.maxHp)
+			Console("case 2");
+			actualAmountHealed=(healObj.to.Stats.maxHp*healObj.amount)-((healObj.to.Stats.hp+(healObj.to.Stats.maxHp*healObj.amount))-healObj.to.Stats.maxHp);
 		}
-		UpdateLocalStorage("amountHealed");
 		healObj.to.Stats.hp=Math.min(healObj.to.Stats.hp+(healObj.to.Stats.maxHp*healObj.amount),healObj.to.Stats.maxHp);
-		Console(`${healObj.from.type} healed ${healObj.to.Stats.name} for ${healObj.amount*100}% (${(healObj.to.Stats.maxHp*healObj.amount)})`);
 	}else{
-		if(Party.Characters.findIndex((character)=>character.Stats.name==healObj.to.Stats.name)!==-1){
-			if(healObj.to.Stats.hp===healObj.to.Stats.maxHp){
-				addAchievement(1);
-			}else{
-				if(healObj.to.Stats.hp+healObj.amount<=healObj.to.Stats.maxHp){
-					amountHealed+=healObj.amount;
-				}else{
-					amoountHealed+=(healObj.to.Stats.hp+healObj.amount)-((healObj.to.Stats.hp+healObj.amount)-healObj.to.Stats.maxHp)
-				}
-				UpdateLocalStorage("amountHealed");
-			}
+		if(healObj.to.Stats.hp+healObj.amount<=healObj.to.Stats.maxHp){
+			Console("case 3");
+			actualAmountHealed=healObj.amount;
+		}else{
+			Console("case 4");
+			actualAmountHealed=healObj.amount-((healObj.to.Stats.hp+healObj.amount)-healObj.to.Stats.maxHp);
 		}
 		healObj.to.Stats.hp=Math.min(healObj.to.Stats.hp+healObj.amount,healObj.to.Stats.maxHp);
-		Console(`${healObj.from.type} healed ${healObj.to.Stats.name} for ${healObj.amount}`);
 	}
+	if(Party.Characters.includes(healObj.to)){
+		amountHealed+=actualAmountHealed;
+		if(healObj.to.Stats.hp===healObj.to.Stats.maxHp){
+			addAchievement(1);
+		}
+	}
+	
+	UpdateLocalStorage("amountHealed");
+	Console(`${healObj.from.type} healed ${healObj.to.Stats.name} for ${actualAmountHealed}`,"COMBATLOG");
 }
 function calculateDamageReduction(armor){
 	if(armor>0){
@@ -475,6 +524,7 @@ function MakeZoneDescription(zoneID){
 }
 function checkToStartBoss(){
 	if(GLOBAL.Combat.fights/(GLOBAL.mapNode[0]+1)<ReadSeed(GLOBAL.seed).numberOfCombats){
+		//the # of combats played / the zone # < the # of combats made in the seed
 		Console("No Boss");
 		return false;
 	}else{
@@ -492,6 +542,8 @@ function updateBossDescription(description){
 			GLOBAL.Combat.StartCombat(true,GLOBAL.Combat.SpawnCard.Zone[GLOBAL.mapNode[0]].bosses[0].card);
 			GLOBAL.mapNode[0]++;
 			MakeZoneDescription(GLOBAL.mapNode[0]);
+			NORMALCOMBAT.style.display="block";
+			BOSSCOMBAT.style.display="none";
 		})
 	}catch(e){
 		Console(e,"UPDATEBOSSDESC");
@@ -765,6 +817,7 @@ function PassTurn(){
 		GLOBAL.Combat.turn=0;
 		GLOBAL.Combat.round++;
 	}
+	Console(`${GetTurnOrder()[GLOBAL.Combat.turn].Stats.name}'s turn started!`,"")
 	TriggerBuffs(0);
 	TriggerDebuffs(0);
 	error="1";
@@ -813,12 +866,32 @@ async function PrintToConsole(message){
 	
 }
 function Console(message, sender="System"){
-	consoleOutput.push(`${sender}: ${message}`)
-	if(consoleOutput.length>8){
-		consoleOutput=consoleOutput.slice(-8);
+	if(sender==="COMBATLOG"){
+		setTimeout(()=>{
+			if(GLOBAL.Combat.inCombat||message=="<hr> New combat"){
+				if(message=="<hr> New combat"){
+					combatLogOutput.push(`${message}`);
+				}else{
+					combatLogOutput.push(`turn ${(GLOBAL.Combat.round+1)*(GLOBAL.Combat.turn)}: ${message}`);
+				}
+				if(combatLogOutput.length>13){
+					combatLogOutput=combatLogOutput.slice(-13);
+				}
+				LOG.innerHTML=combatLogOutput.join("<br>");
+			}
+		},100);
+	}else{
+		activeMessages++;
+		setTimeout(()=>{
+			consoleOutput.push(`${sender}: ${message}`)
+			if(consoleOutput.length>8){
+				consoleOutput=consoleOutput.slice(-8);
+			}
+			//console.log(`${sender}: ${message} `);
+			CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
+			activeMessages--;
+		},0+(activeMessages*100));
 	}
-	console.log(`${sender}: ${message}`);
-	CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
 }
 function LevelEverybody(){
 	Party.Characters.forEach((character)=>{

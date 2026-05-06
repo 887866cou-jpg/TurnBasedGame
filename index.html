@@ -110,13 +110,17 @@
 			</button>
 		</dialog>
 		<dialog id="menu_screen" open>
+			<p id="version">
+				test
+			</p>
 			<button class="menu_button" id="start_button">New Game</button><br>
 			<button class="menu_button" id="settings_button">Settings</button><br>
 			<button class="menu_button" id="options_button">Options</button><br>
 			<button class="menu_button" id="stats_button">Stats</button><br>
 			<button class="menu_button" id="changelog_button">Changelog</button>
 			<dialog id="settings_menu">
-				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label>
+				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label><br>
+				<label for="auto_pass">Auto-pass <b>[WIP]</b><input type="checkbox" id="auto_pass"> </input>(if you have 0 stamina the game will auto-pass the turn)</label>
 				<button id="close_settings_button" class="back_button">Close</button>
 			</dialog>
 			<dialog id="options_menu">
@@ -250,6 +254,12 @@
 				</button>
 			</dialog>
 			<dialog id="changelog_dialog">
+				<h1>
+					Changelog
+				</h1>
+				<p>
+					Items listed in <b style="color:red;">red</b> are notes from the dev.<br>Items listed in <b style="color:green;">green</b> are changes made.<br>Items listed in <b style="color: orange;">orange</b> are Work in progress items, and finally.<br> Items listed in <b style="color:black">black</b> are future plans not yet started
+				</p>
 				<div id="changelog">
 					
 				</div>
@@ -259,6 +269,9 @@
 			</dialog>
 		</dialog>
 		<dialog id="fight_dialog">
+			<button id="combat_log_opener">
+				Show Combat log
+			</button>
 			<div id="player">
 				<div id="stats_area" class="area">
 					<div id="character_0_stats" class="char_0 stats">
@@ -308,8 +321,14 @@
 					
 				</ol>
 			</div>
+			<dialog id="combat_log">
+				<div id="log">
+					
+				</div>
+			</dialog>
 		</dialog>
 		<script src="./Scripts/Changelog.js"></script>
+		<script src="./Scripts/Enemy.js"></script>
 		<script src="./Scripts/classes.js"></script>
 		<script src="./Scripts/elements.js"></script>
 		<script src="./Scripts/Modding/FunctionsForMods.js"></script>

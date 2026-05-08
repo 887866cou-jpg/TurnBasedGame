@@ -21,6 +21,9 @@ let GLOBAL={
 		if(!this.alertVals.inventory){
 			INVENTORYBUTTON.classList.remove("alert");
 		}
+		if(!this.alertVals.achievements&&!this.alertVals.inventory){
+			PAUSEBUTTON.innerHTML=`&#129908;&#129904`;
+		}
 	},
 	seed:null,
 	get armorFalloff(){
@@ -303,6 +306,7 @@ let GLOBAL={
 						DebuffCopy.target=to;
 						DebuffCopy.effect=function (){
 							this.stacks--;
+							Console(`${to.Stats.name} is stunned (turn skipped)`,"COMBATLOG")
 							PassTurn();
 						};
 						//Console(`assigning ${JSON.stringify(DebuffCopy)} to ${to.Stats.name}`)
@@ -635,7 +639,7 @@ let GLOBAL={
 					cards:[
 						{
 							easy:[
-								["Strix","Strix","Strix"],//encounters
+								["Strix","Strix","Strix"]//encounters
 							],
 							hard:[
 								["Strix","Strix","Strix","Strix"]

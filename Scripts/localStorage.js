@@ -29,6 +29,7 @@ var amountHealed=JSON.parse(localStorage.getItem("amountHealed"))??0;
 var totalXpGained=JSON.parse(localStorage.getItem("totalXpGained"))??0;
 var presetsBeaten=JSON.parse(localStorage.getItem("presetsBeaten"))??[];
 var timePlayed=JSON.parse(localStorage.getItem("timePlayed"))??0;
+let startTime=new Date();
 function findTotalLevel(){
 	let output=1;
 	for(let remainingXp=totalXpGained;output*10<remainingXp;remainingXp-=output*10){
@@ -82,7 +83,32 @@ function gainMoney(type, amount){
 			}
 		}
 		UpdateLocalStorage("moneyGained");
+}
+function addTime(){
+	const currentTime=new Date();
+	function getTotalseconds(date){
+		let output=0;
+		output+=Math.floor(date.getTime()/1000);
+		return output;
 	}
+	Console(getTotalseconds(currentTime)-getTotalseconds(startTime))
+	timePlayed+=getTotalseconds(currentTime)-getTotalseconds(startTime);
+	startTime=currentTime;
+	UpdateLocalStorage("timePlayed");
+}
+function toDaysHoursMinutesSeconds(seconds){
+	let output=[];
+	let remainder=0;
+	if(Math.floor(seconds/8640)>0){
+		output.push(`${Math.floor(seconds/86400)} Days `);
+	}
+	output.push(`${`${Math.floor((seconds%86400)/360)}`.padStart(2,"0")}:`);
+	output.push(`${`${Math.floor(((seconds%86400)%360)/60)}`.padStart(2,"0")}.`);
+	output.push(`${`${(((seconds%86400)%360)%60)}`.padStart(2,"0")}`);
+	Console(output.join(""));
+	return output.join("");
+}
+
 UpdateLocalStorage("games");
 UpdateLocalStorage("achievements");
 UpdateLocalStorage("battles");
@@ -99,3 +125,4 @@ UpdateLocalStorage("moneyGained");
 UpdateLocalStorage("amountHealed");
 UpdateLocalStorage("totalXpGained");
 UpdateLocalStorage("presetsBeaten");
+UpdateLocalStorage("timePlayed");

@@ -4,3 +4,6 @@ function give(EQUIPMENTTYPE,INDEX,MODIFIERNAME,CHARACTERINDEX){
 function bossProg(){
 	Console(`${Math.ceil(GLOBAL.Combat.fights/(GLOBAL.mapNode[0]+1))}/${ReadSeed(GLOBAL.seed).numberOfCombats}`,`Combats till boss`)
 }
+function hide(sender){
+	hidelist.push(sender);
+}

@@ -16,3 +16,4 @@ ReadSeed(GLOBAL.seed).EventNames.forEach((zoneEvents,zoneIndex)=>{
     })
 })
 VERSION.innerHTML=`v${findCurrentVersion().join(".")}`;
+Console(startTime,"TIMER");

@@ -979,15 +979,12 @@ class Enemy{
 										}
 									})
 								});
-								Party.Characters.forEach((character,index)=>{
-									Damage({Amount:this.damage,Type:this.damageType,get to(){return Party.Characters[index]},from:enemy,using:this});
-								})
 								}catch(e){Console(e)}
 							}
 						}
 					]
 				};
-				this.AttackPattern=[][rand(0,2)];
+				this.AttackPattern=[["Sonic",0],["Claw",0],["Beak",0]];
 				this.AttackStage=0;
 				break;
 		}
@@ -1014,7 +1011,7 @@ class Enemy{
             Console("no attack");
         }
     }catch(e){
-        Console(`Error during attack: ${e}\n(${this.Actions[this.AttackPattern[this.AttackStage][0]][ this.AttackPattern[this.AttackStage][1]]})`);
+        Console(`Error during attack: ${e}\n(${this.Actions[this.AttackPattern[this.AttackStage][0]][ this.AttackPattern[this.AttackStage][1]]})`,"ERROR");
     }
 }
 

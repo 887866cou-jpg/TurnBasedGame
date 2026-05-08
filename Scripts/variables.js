@@ -10,6 +10,8 @@ let combatLogOutput=[];
 let combatLogMessages=0;
 let activeMessages=0;
 let combatLog=0;
+let hasErrored=false;
+let hidelist=["System","Rolls","SEEDGEN","TSoBE"];
 let notifications={
 	inventory:false,
 	achivements:false,
@@ -296,7 +298,7 @@ let Enchantments=[//Level 1 enchantments
 			})
 		}
 	},
-	{
+	/*{
 		name:"toxic",
 		equipment:["Weapons"],
 		effect(to){
@@ -310,7 +312,7 @@ let Enchantments=[//Level 1 enchantments
 				})
 			})
 		}
-	},
+	},*/
 	{
 		name:"self-dipped",
 		equipment:["Weapons"],
@@ -362,5 +364,6 @@ let stats={
 	"money gained":`<ul><li>Copper: ${moneyGained.copper}</li><li>Silver: ${moneyGained.silver}</li><li>Gold: ${moneyGained.gold}</li><li>Platinum: ${moneyGained.platinum}</li></ul>`,
 	"amount healed":`${amountHealed} Hp`,
 	"xp gained":`${totalXpGained} Xp`,
-	"profile level":` Level ${findTotalLevel()}`
+	"profile level":` Level ${findTotalLevel()}`,
+	"Total time spent":`${toDaysHoursMinutesSeconds(timePlayed)}`
 }

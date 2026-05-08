@@ -46,6 +46,7 @@ const COMBATLOGDIALOG=DOC.getElementById("combat_log");
 const FONTSELECT=DOC.getElementById("select_font");
 const SETTINGS_ATTACKINTERVAL=DOC.getElementById("attack_interval_setting");
 const AUTOPASS=DOC.getElementById("auto_pass");
+const STOPONERROR=DOC.getElementById("stop_console_on_error");
 
 //difficulties
 const DIFFICULTY_CHECKS=DOC.getElementsByClassName("difficulties");
@@ -97,6 +98,8 @@ const NORMALCOMBAT=DOC.getElementById("normal_combat");
 const BOSSCOMBAT=DOC.getElementById("boss_combat");
 const BOSSDESC=DOC.getElementById("boss_desc");
 const CHANGELOG=DOC.getElementById("changelog");
-const LOG=DOC.getElementById("log")
-const VERSION=DOC.getElementById("version")
+const LOG=DOC.getElementById("log");
+const VERSION=DOC.getElementById("version");
+
+
 Console("Turn based game/Scripts/elements.js loaded");

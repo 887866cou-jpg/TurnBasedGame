@@ -195,11 +195,15 @@ INVENTORYBUTTON.addEventListener("click",()=>{
 });
 STATSBUTTON.addEventListener("click",()=>{
 	//Opens and updates the stats display
-	UpdateStats();
-})
+	try{
+		UpdateStats();
+	}catch(e){
+		Console(e);
+	}
+});
 CLOSESTATSDIALOG.addEventListener("click",()=>{
 	STATSDIALOG.close()
-})
+});
 SETTINGS_ATTACKINTERVAL.addEventListener("change",(event)=>{
 	try{
 		settings.Other.Attack_interval_delay=event.target.value;

@@ -17,8 +17,8 @@ function TriggerDebuffs(STARTOREND) {
 			if(debuff.triggerTime==STARTOREND){
 				if(debuff.effect){
 					debuff.effect();
+					Console(`${debuff.name} triggered on ${debuff.target.Stats.name}`, "TRIGGERDEBUFFS");
 				}
-				Console(`${debuff.name} triggered on ${debuff.target.Stats.name}`, "TRIGGERDEBUFFS");
 			}
 		})
 		error+=1;
@@ -29,7 +29,7 @@ function TriggerDebuffs(STARTOREND) {
 		})
 		GetTurnOrder()[GLOBAL.Combat.turn].Stats.debuffs=GetTurnOrder()[GLOBAL.Combat.turn].Stats.debuffs.filter((debuff)=>debuff.stacks>0);
 	}
-	}catch(e){Console(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function TriggerBuffs(STARTOREND) {
 	error="bufftrigger";
@@ -56,7 +56,7 @@ function TriggerBuffs(STARTOREND) {
 			GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs=GetTurnOrder()[GLOBAL.Combat.turn].Stats.buffs.filter((buff)=>buff.stacks>0);
 		}
 	}
-	}catch(e){Console(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 	error="applydebuff"
@@ -79,7 +79,7 @@ function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 		}
 		UpdateEnemyDisplay();
 	}
-	}catch(e){PrintToConsole(`${e} (${error}, values: ${JSON.stringify(arguments)})`)}
+	}catch(e){Console(`${e} (${error}, values: ${JSON.stringify(arguments)})`,"ERROR")}
 }
 function ApplyBuff(BUFFNAME,TO,STACK,CHANCE){
 	error="applybuff"
@@ -94,7 +94,7 @@ function ApplyBuff(BUFFNAME,TO,STACK,CHANCE){
 		GLOBAL.buffs[BUFFNAME].assign(TO,STACK)
 		UpdateEnemyDisplay();
 	}
-	}catch(e){PrintToConsole(`${e} (${error}, values: ${JSON.stringify(arguments)})`)}
+	}catch(e){Console(`${e} (${error}, values: ${JSON.stringify(arguments)})`,"")}
 }
 function findDamage(damageObject){
 	//PrintToConsole(JSON.stringify(damageObject.to));
@@ -276,7 +276,7 @@ function Damage(damageObject){
 	if(Party.Characters.length===0){
 		location.reload();
 	}
-	}catch(e){Console(`${e} (${error})`)}
+	}catch(e){Console(`${e} (${error})`,"ERROR")}
 }
 function heal(healObj){
 	/*
@@ -500,7 +500,7 @@ function MakeEvent(eventID){
 		EVENTDIALOG.appendChild(EVENTOPTION);
 	});
 	EVENTDIALOG.show();
-	}catch(e){Console(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function MakeZoneDescription(zoneID){
 	error=" event"
@@ -520,7 +520,7 @@ function MakeZoneDescription(zoneID){
 	EVENTDIALOG.appendChild(DOC.createElement("br"));
 	EVENTDIALOG.appendChild(ZONEOPTION);
 	EVENTDIALOG.show();
-	}catch(e){Console(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function checkToStartBoss(){
 	if(GLOBAL.Combat.fights/(GLOBAL.mapNode[0]+1)<ReadSeed(GLOBAL.seed).numberOfCombats){
@@ -546,7 +546,7 @@ function updateBossDescription(description){
 			BOSSCOMBAT.style.display="none";
 		})
 	}catch(e){
-		Console(e,"UPDATEBOSSDESC");
+		Console(e,"ERROR");
 	}
 }
 function MakeSkillChoice(characterIndex){
@@ -576,7 +576,7 @@ function MakeSkillChoice(characterIndex){
 					}
 					skill.effect();
 					skill.hasSkill=true;
-				}catch(e){Console(e)}
+				}catch(e){Console(e,"ERROR")}
 			})
 			NEWSKILLCHOICE.innerHTML=`Gain skill "${skill.name}"`;
 			NEWSKILLDESC.innerHTML=`${skill.desc}`;
@@ -588,7 +588,7 @@ function MakeSkillChoice(characterIndex){
 	SKILLDIALOG.appendChild(CHARACTERSKILLOPTIONS);
 	CHARACTERSKILLOPTIONS.show();
 	SKILLDIALOG.show();
-	}catch(e){Console(e)}
+	}catch(e){Console(e,"ERROR")}
 }
 function MakeSubEvent(eventID){
 	error=" subevent";
@@ -615,7 +615,7 @@ function MakeSubEvent(eventID){
 	});
 	EVENTDIALOG.show();
 		},0);
-	}catch(e){Console(`${e} (${error})`)}
+	}catch(e){Console(`${e} (${error})`,"ERROR")}
 }
 
 function addAchievement(index){
@@ -769,7 +769,7 @@ function UpdateTurnOrder(withpass){
 							turn.Attack();
 						}
 					}
-				}catch(e){PrintToConsole(`${e} during ${turn.ID}`)}
+				}catch(e){Console(`${e} during ${turn.ID}`,"ERROR")}
 			}
 			PASSBUTTON.disabled=true;
 		}else if(GLOBAL.Combat.turn===index){
@@ -798,7 +798,7 @@ function UpdateTurnOrder(withpass){
 	Array.from(DOC.getElementsByClassName("character_ability")).forEach((ability)=>{
 		ability.checkAbility();
 	});
-	}catch(e){PrintToConsole(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function CheckForDeath(){
 	if(Party.Characters.length>0){
@@ -809,6 +809,7 @@ function CheckForDeath(){
 }
 function PassTurn(){
 	try{
+	addTime();
 	TriggerBuffs(1)
 	TriggerDebuffs(1);
 	TriggerEndOfTurnEffects();
@@ -824,7 +825,7 @@ function PassTurn(){
 	UpdateTurnOrder(true);
 	CheckForDeath()
 	
-	}catch(e){PrintToConsole(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function GetFrontCharacter(){
 	return Party.Characters[0];
@@ -866,7 +867,7 @@ async function PrintToConsole(message){
 	
 }
 function Console(message, sender="System"){
-	if(sender==="COMBATLOG"){
+	if(sender==="COMBATLOG"&&!hasErrored){
 		setTimeout(()=>{
 			if(GLOBAL.Combat.inCombat||message=="<hr> New combat"){
 				if(message=="<hr> New combat"){
@@ -880,7 +881,17 @@ function Console(message, sender="System"){
 				LOG.innerHTML=combatLogOutput.join("<br>");
 			}
 		},100);
-	}else{
+	}else if(sender=="ERROR"){
+		if(STOPONERROR.checked){
+			hasErrored=true;
+		}
+		consoleOutput.push(`${sender}: ${message}`)
+		if(consoleOutput.length>8){
+			consoleOutput=consoleOutput.slice(-8);
+		}
+		//console.log(`${sender}: ${message} `);
+		CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
+	}else if(!hasErrored&&!hidelist.includes(sender)){
 		activeMessages++;
 		setTimeout(()=>{
 			consoleOutput.push(`${sender}: ${message}`)
@@ -923,7 +934,7 @@ function FindValue(input){
 			});
 			Console(safeStringify(currentValue));
 		}
-	}catch(e){Console(e)}
+	}catch(e){Console(e,"ERROR")}
 }
 function generateCommandList() {
     const commands = [];
@@ -1040,7 +1051,7 @@ function MakeSeed(){
 	SeedOutput=part.join("");
 	Console(`Generated Seed: ${SeedOutput}`,"SEEDGEN");
 	return SeedOutput;
-	}catch(e){alert(e)}
+	}catch(e){Console(e,"ERROR")}
 
 }
 function ReadSeed(seed){
@@ -1073,7 +1084,7 @@ function ReadSeed(seed){
 	})
 	return out;
 	}catch(e){
-		Console(`${e}`,"SEEDREADER")
+		Console(`${e}`,"ERROR")
 	}
 }
 function getSeed(){

@@ -4,7 +4,7 @@ function UpdateStats(){
 		const NEWSTAT=DOC.createElement("li");
 		NEWSTAT.innerHTML=`${stat}: ${stats[stat]}`;
 		STATS.appendChild(NEWSTAT)
-	})
+	});
 	STATSDIALOG.show();
 }
 function updateInventory(){
@@ -80,7 +80,7 @@ function updateInventory(){
 		INVENTORY.appendChild(NEWBOX);
 		INVENTORY.appendChild(NEWITEM);
 	})
-	}catch(e){Console(e)}
+	}catch(e){Console(e,"ERROR")}
 }
 function UpdateBossScreen(){
 	
@@ -196,7 +196,7 @@ function UpdateEnemyStatDisplay(index){
 		stats.push(`This enemy intends to:${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damage?`Deal ${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damage}${GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].damageType}`:``} ${JSON.stringify(GLOBAL.Combat.enemies[index].Actions[GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][0]][GLOBAL.Combat.enemies[index].AttackPattern[GLOBAL.Combat.enemies[index].AttackStage][1]].desc)}`)
 		Array.from(ENEMYSTATS)[index].innerHTML=`<p>${stats.join(`</p>\n<p>`)}</p>`;
 	}
-	}catch(e){PrintToConsole(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function UpdateEnemyDisplay(){
 	error=" enemydisplay";
@@ -229,7 +229,7 @@ function UpdateEnemyDisplay(){
 	}else{
 		GLOBAL.Combat.EndCombat();
 	}
-	}catch(e){Console(e+error)}
+	}catch(e){Console(e+error,"ERROR")}
 }
 function UpdateAll(ENEMYORPLAYER){
 	if(ENEMYORPLAYER===1||!ENEMYORPLAYER){

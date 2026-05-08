@@ -25,11 +25,11 @@ let Events=[
 			]
 		},
 		{
-			name:"The Stranger",
-			text:`Who stands before you?`,
+			name:"The Healer",
+			text:`You are walking down a dirt road, after walking for a while you notice the shape of a man in the path. He introduces himself as Glum Farfield, a healer of no renown, and says he is searching for his brother`,
 			options:[
 				{
-					text:"Offer your brother an adventure beyond his wildest dreams (requires Hen Farfield)",
+					text:"Reunite with your brother at long last. (requires Hen Farfield)",
 					condition(){
 						return Party.Characters.filter((member)=>member.Stats.name==="Hen Farfield").length===1;
 					},
@@ -39,27 +39,23 @@ let Events=[
 						charactersGotten++;
 						UpdateLocalStorage("charactersGotten");
 						if(!GLOBAL.usingSeed){
-							Events[0]=Events[0].filter((event)=>event.name!=="The Stranger");
+							Events[0]=Events[0].filter((event)=>event.name!=="The Healer");
 						}
 						addAchievement(6);
 					}
 				},
-				{
-					text:"Leave the strange man to wander, alone...",
+{
+					text:"Wish him luck",
 					condition(){
-						return Party.Characters.filter((member)=>member.Stats.name==="Hen Farfield").length==-1;
+						return true;
 					},
 					effect(){
-						Party.reputation+=1;
-						Party.Characters.push(Characters[1]);
-						charactersGotten++;
-						UpdateLocalStorage("charactersGotten");
 						if(!GLOBAL.usingSeed){
-							Events[0]=Events[0].filter((event)=>event.name!=="The Stranger");
+							Events[0]=Events[0].filter((event)=>event.name!=="The Healer");
 						}
-						addAchievement(6);
 					}
-				},
+				}
+
 			]
 		},
 		{

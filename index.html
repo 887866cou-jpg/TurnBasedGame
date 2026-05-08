@@ -120,7 +120,8 @@
 			<button class="menu_button" id="changelog_button">Changelog</button>
 			<dialog id="settings_menu">
 				<label for="attack_interval_setting">Ms between enemy attacks <input id="attack_interval_setting" type="number" min="1">ms</label><br>
-				<label for="auto_pass">Auto-pass <b>[WIP]</b><input type="checkbox" id="auto_pass"> </input>(if you have 0 stamina the game will auto-pass the turn)</label>
+				<label for="auto_pass">Auto-pass <b>[WIP]</b><input type="checkbox" id="auto_pass"> </input>(if you have 0 stamina the game will auto-pass the turn)</label><br>
+				<label for="stop_console_on_error"><input type="checkbox" id="stop_console_on_error" checked></input>Stop Console on error</label>
 				<button id="close_settings_button" class="back_button">Close</button>
 			</dialog>
 			<dialog id="options_menu">
@@ -331,11 +332,11 @@
 		<script src="./Scripts/Enemy.js"></script>
 		<script src="./Scripts/classes.js"></script>
 		<script src="./Scripts/elements.js"></script>
+		<script src="./Scripts/localStorage.js"></script>
 		<script src="./Scripts/Modding/FunctionsForMods.js"></script>
 		<script src="./Scripts/updateFunctions.js"></script>
 		<script src="./Scripts/functions.js"></script>
 		<script src="./Scripts/debug.js"></script>
-		<script src="./Scripts/localStorage.js"></script>
 		<script src="./Scripts/Party.js"></script>
 		<script src="./Scripts/Characters.js"></script>
 		<script src="./Scripts/Equipment.js"></script>

@@ -80,8 +80,11 @@ html{
 	background-color:darkgray;
 	opacity:0;
 	position:fixed;
+	padding:0;
+	margin:0;
 	transition: opacity 250ms;
 	max-height: 100%;
+	width:calc(100% - 10%);
 	text-wrap:wrap;
 	overflow-x:scroll;
 	pointer-events:none;

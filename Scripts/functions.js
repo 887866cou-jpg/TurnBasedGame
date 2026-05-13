@@ -6,6 +6,43 @@ Array.prototype.average=function (){
 	const initialValue = 0;
 	return (this.reduce((accumulator, currentValue) => accumulator + currentValue,initialValue)/this.length);
 }
+function addToInventory(ITEMID,amount,check){
+	//Amount can be negative to remove items from the inventory
+	//when check is true, this function will return a bool
+	//Then if the amount being added plus the amount in the inventory is less than 0 than it will return false
+	//
+	try{
+	if(Items[ITEMID]){
+		if(Items[ITEMID].type=="material"){
+			let itemAdding={...Items[ITEMID]};
+			itemAdding.amount=parseInt(amount);
+			let hasItem=-1;
+			for(var index=0;index<Party.inventory.length;index++){
+				if(Items[ITEMID].name==Party.inventory[index].name){
+					hasItem=index;
+					break;
+				}
+			}
+			Console(hasItem,"HASITEM");
+			if(hasItem!==-1){
+				if(Party.inventory[hasItem].amount+parseInt(amount)<0&&check){
+					return false;
+				}else if(check){
+					return true;
+				}
+				Party.inventory[hasItem].amount+=parseInt(amount);
+				Console(`Party.inventory[hasItem].amount incremented by ${amount} to ${Party.inventory[hasItem].amount}`,"ADDTOINVENTORY");
+				Party.inventory=Party.inventory.filter((item)=>item.amount>0);
+			}else if(!check&&amount>0){
+				Party.inventory.push(itemAdding);
+				Console(`added ${itemAdding.name} to party inventory`,"ADDTOINVENTORY");
+			}
+		}
+	}
+	}catch(e){
+		Console(e,"ERROR")
+	}
+}
 function TriggerDebuffs(STARTOREND) {
 	error="debufftrigger";
 	try{
@@ -64,7 +101,7 @@ function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 	if(CHANCE){
 		//CHANCE will be a Chance object
 		
-	}else{
+	}else if(TO){
 		error+=1;
 		Console(`applying ${STACK} ${DEBUFFNAME} to ${TO.Stats.name}`,"COMBATLOG")
 		error+=1;
@@ -80,6 +117,8 @@ function ApplyDebuff(DEBUFFNAME,TO,STACK,CHANCE){
 		UpdateEnemyDisplay();
 	}
 	}catch(e){Console(`${e} (${error}, values: ${JSON.stringify(arguments)})`,"ERROR")}
+	//values: ""
+	//values: {"0":bleed,"2":1}
 }
 function ApplyBuff(BUFFNAME,TO,STACK,CHANCE){
 	error="applybuff"
@@ -223,6 +262,21 @@ function Damage(damageObject){
 			}
 			UpdateLocalStorage("damageDealt");
 		}
+		GLOBAL.Combat.enemies.forEach((enemy)=>{
+			if(enemy.Stats.hp<=0){
+				if(enemy.Stats.lootTable){
+					enemy.Stats.lootTable.forEach((item)=>{
+						if(item.chance){
+							if(item.chance.succeed){
+								addToInventory(item.ID,item.amount,false);
+							}
+						}else{
+							addToInventory(item.ID,item.amount,false);
+						}
+					})
+				}
+			}
+		})
 		GLOBAL.Combat.enemies=GLOBAL.Combat.enemies.filter((enemy)=> enemy.Stats.hp>0);
 		UpdateEnemyDisplay();
 		if(GLOBAL.Combat.enemies.findIndex((enemy)=> enemy==damageObject.to)>=0){
@@ -352,7 +406,7 @@ function giveRandomBook(){
 	let bookGiven=new Book(true);
 	PAUSEBUTTON.innerHTML="!!!";
 	GLOBAL.alerts=["inventory",1];
-	Party.inventory.push({type:"enchanted book",desc:JSON.stringify(bookGiven),value:bookGiven})
+	Party.inventory.push({type:"enchantedBook",desc:JSON.stringify(bookGiven),value:bookGiven})
 }
 function getDebuffSymbol(name){
 	switch(name){
@@ -810,15 +864,46 @@ function CheckForDeath(){
 function PassTurn(){
 	try{
 	addTime();
+	if(timePlayed>=60){
+		addAchievement(88);
+		if(timePlayed>=900){
+			addAchievement(89);
+			if(timePlayed>=1800){
+				addAchievement(90);
+				if(timePlayed>=3600){
+					addAchievement(91);
+					if(timePlayed>=18000){
+						addAchievement(92);
+						if(timePlayed>=36000){
+							addAchievement(93);
+							if(timePlayed>=86400){
+								addAchievement(94);
+								if(timePlayed>=172800){
+									addAchievement(95);
+									if(timePlayed>=345600){
+										addAchievement(96);
+										if(timePlayed>=604800){
+											addAchievement(88);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	TriggerBuffs(1)
 	TriggerDebuffs(1);
 	TriggerEndOfTurnEffects();
 	GLOBAL.Combat.turn++;
+	GLOBAL.Combat.totalTurns++;
 	if(GLOBAL.Combat.turn+1>GetTurnOrder().length){
 		GLOBAL.Combat.turn=0;
 		GLOBAL.Combat.round++;
 	}
-	Console(`${GetTurnOrder()[GLOBAL.Combat.turn].Stats.name}'s turn started!`,"")
+	Console(`${GetTurnOrder()[GLOBAL.Combat.turn].Stats.name}'s turn started!`,"COMBATLOG")
 	TriggerBuffs(0);
 	TriggerDebuffs(0);
 	error="1";
@@ -873,7 +958,7 @@ function Console(message, sender="System"){
 				if(message=="<hr> New combat"){
 					combatLogOutput.push(`${message}`);
 				}else{
-					combatLogOutput.push(`turn ${(GLOBAL.Combat.round+1)*(GLOBAL.Combat.turn)}: ${message}`);
+					combatLogOutput.push(`turn ${GLOBAL.Combat.totalTurns}: ${message}`);
 				}
 				if(combatLogOutput.length>13){
 					combatLogOutput=combatLogOutput.slice(-13);

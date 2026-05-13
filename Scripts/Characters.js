@@ -80,8 +80,8 @@ const Characters=[
 			Stats:{
 				name:"Glum Farfield",
 				speed:11,
-				hp:100,
-				maxHp:100,
+				hp:45,
+				maxHp:45,
 				level:0,
 				xp:0,
 				maxXp:10,
@@ -99,6 +99,7 @@ const Characters=[
 					this.level++;
 					levelsGained++;
 					UpdateLocalStorage("levelsGained");
+					
 					if(Party.Characters[Party.Characters.findIndex((character)=>character.Stats.name==="Glum Farfield")].Skills.length>=this.level){
 						MakeSkillChoice(Party.Characters.findIndex((character)=>character.Stats.name==="Glum Farfield"));
 					}
@@ -218,7 +219,7 @@ const Characters=[
 						name:"Healing Wave",
 						cost:4,
 						healing:3,
-						desc:"Heal each member of your party by 3",
+						desc:"Heal each member of your party by",
 						effect(){
 							Party.Characters.forEach((character,index)=>{
 								try{
@@ -231,7 +232,7 @@ const Characters=[
 						name:"Heal",
 						cost:2,
 						healing:5,
-						desc:"Heal a member of your party by 5",
+						desc:"Heal a member of your party by",
 						effect(){
 							PlayerChooseTarget((index,character)=>{
 								try{

@@ -188,6 +188,16 @@ let GLOBAL={
 		"86. Dedication VIII: reach profile level 30",
 		"87. Dedication IX: reach profile level 40",
 		"88. Dedication X: reach profile level 50",
+		"89. Tic-Toc I: Spend 1 minute total playing",//60
+		"90. Tic-Toc II: Spend 15 minutes total playing",//900
+		"91. Tic-Toc III: Spend 30 minutes total playing",//1800
+		"92. Tic-Toc IV: Spend 1 hour total playing",//3600
+		"93. Tic-Toc V: Spend 5 hours total playing",//18000
+		"94. Tic-Toc VI: Spend 10 hours total playing",//36000
+		"95. Tic-Toc VII: Spend 1 day total playing",//86400
+		"96. Tic-Toc VIII: Spend 2 days total playing",//172800
+		"97. Tic-Toc IX: Spend 4 days total playing",//345600
+		"98. Tic-Toc X: Spend 1 week total playing",//604800
 	],
 	buffs:{
 		regen:{
@@ -570,6 +580,7 @@ let GLOBAL={
 		fights:0,
 		inCombat:false,
 		turn:0,
+		totalTurns:0,
 		round:0,
 		enemies:[],
 		SpawnCard:{
@@ -741,6 +752,7 @@ let GLOBAL={
 			this.enemies=[];
 			this.turn=0;
 			this.round=0;
+			this.totalTurns=0;
 			this.inCombat=false;
 			FIGHTDIALOG.close();
 			GLOBAL.Combat.round=0;

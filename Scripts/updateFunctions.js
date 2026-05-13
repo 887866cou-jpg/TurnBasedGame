@@ -11,77 +11,87 @@ function updateInventory(){
 	try{
 	INVENTORY.innerHTML="";
 	Party.inventory.forEach((item,index)=>{
-		const NEWBOX=DOC.createElement("fieldset");
-		const NEWINVENTORYDISPLAY=DOC.createElement("li");
-		function getValidItems(){
-			let output=[];
-			let includesWeapons=false;
-			item.value.Enchants.forEach((enchant)=>{
-				if(enchant.equipment.includes("Weapons")){
-					includesWeapons=true;
-				}
-			})
-			if(includesWeapons){
-				Party.Characters.forEach((character)=>{
-					if(character.Equipment.Weapons.enchants<GLOBAL.maxEnchants){
-						output.push({
-							get EquipTo(){
-								return character
-							},
-							get Item(){
-								return index
-							}
-						});
-					}
-				})
-			}
-			return output
-		}
-		
-		const NEWITEM=DOC.createElement("li");
-		function getnames(){
-			let output=[];
-			JSON.parse(item.desc).Enchants.forEach((enchant)=>{
-				output.push(enchant.name);
-			})
-			return output.join(",");
-		}
-		NEWINVENTORYDISPLAY.innerHTML=`${item.type}: ${getnames()} <br>Valid Targets:`;
-		NEWBOX.appendChild(NEWINVENTORYDISPLAY);
-		getValidItems().forEach((validItem)=>{
-			const NEWITEMTARGETBUTTON=DOC.createElement("button");
-			NEWITEMTARGETBUTTON.innerHTML=`${validItem.EquipTo.Stats.name}'s ${validItem.EquipTo.Equipment.Weapons.name} (${validItem.EquipTo.Equipment.Weapons.enchants}/${GLOBAL.maxEnchants})`;
-			NEWITEMTARGETBUTTON.addEventListener("click",()=>{
+		if(item.type=="enchantedBook"){
+			const NEWBOX=DOC.createElement("fieldset");
+			const NEWINVENTORYDISPLAY=DOC.createElement("li");
+			function getValidItems(){
+				let output=[];
+					let includesWeapons=false;
 				item.value.Enchants.forEach((enchant)=>{
-					enchant.effect(validItem.EquipTo);
-					validItem.EquipTo.Equipment.Weapons.enchants++;
-					if(validItem.EquipTo.Equipment.Weapons.enchants>=1){
-						addAchievement(56);
-						if(validItem.EquipTo.Equipment.Weapons.enchants>=2){
-							addAchievement(57);
-							if(validItem.EquipTo.Equipment.Weapons.enchants>=3){
-								addAchievement(58);
-								if(validItem.EquipTo.Equipment.Weapons.enchants>=4){
-									addAchievement(59);
-									if(validItem.EquipTo.Equipment.Weapons.enchants===5){
-										addAchievement(60);
+					if(enchant.equipment.includes("Weapons")){
+						includesWeapons=true;
+					}
+			})
+				if(includesWeapons){
+					Party.Characters.forEach((character)=>{
+						if(character.Equipment.Weapons.enchants<GLOBAL.maxEnchants){
+							output.push({
+								get EquipTo(){
+									return character
+								},
+								get Item(){
+									return index
+								}
+								});
+						}
+					})
+				}
+				return output
+			}
+			
+			const NEWITEM=DOC.createElement("li");
+			function getnames(){
+				let output=[];
+				JSON.parse(item.desc).Enchants.forEach((enchant)=>{
+					output.push(enchant.name);
+				})
+				return output.join(",");
+			}
+			NEWINVENTORYDISPLAY.innerHTML=`${item.type}: ${getnames()} <br>Valid Targets:`;
+			NEWBOX.appendChild(NEWINVENTORYDISPLAY);
+			getValidItems().forEach((validItem)=>{
+				const NEWITEMTARGETBUTTON=DOC.createElement("button");
+				NEWITEMTARGETBUTTON.innerHTML=`${validItem.EquipTo.Stats.name}'s ${validItem.EquipTo.Equipment.Weapons.name} (${validItem.EquipTo.Equipment.Weapons.enchants}/${GLOBAL.maxEnchants})`;
+					NEWITEMTARGETBUTTON.addEventListener("click",()=>{
+					item.value.Enchants.forEach((enchant)=>{
+						enchant.effect(validItem.EquipTo);
+						validItem.EquipTo.Equipment.Weapons.enchants++;
+						if(validItem.EquipTo.Equipment.Weapons.enchants>=1){
+							addAchievement(56);
+							if(validItem.EquipTo.Equipment.Weapons.enchants>=2){
+								addAchievement(57);
+								if(validItem.EquipTo.Equipment.Weapons.enchants>=3){
+									addAchievement(58);
+									if(validItem.EquipTo.Equipment.Weapons.enchants>=4){
+										addAchievement(59);
+										if(validItem.EquipTo.Equipment.Weapons.enchants===5){
+											addAchievement(60);
+										}
 									}
 								}
 							}
 						}
-					}
-					Party.inventory=Party.inventory.filter((_,index)=>index!==validItem.Item);
-					updateInventory();
-					UpdateCharacterDisplay(Party.Characters.findIndex((character)=>character===validItem.EquipTo))
+						Party.inventory=Party.inventory.filter((_,index)=>index!==validItem.Item);
+						updateInventory();
+						UpdateCharacterDisplay(Party.Characters.findIndex((character)=>character===validItem.EquipTo))
+					})
 				})
+				NEWBOX.appendChild(NEWITEMTARGETBUTTON)
 			})
-			NEWBOX.appendChild(NEWITEMTARGETBUTTON)
-		})
-		INVENTORY.appendChild(NEWBOX);
-		INVENTORY.appendChild(NEWITEM);
+			INVENTORY.appendChild(NEWBOX);
+			INVENTORY.appendChild(NEWITEM);
+		}
+	})
+	Party.inventory.forEach((item,index)=>{
+		if(item.type=="material"){
+			let NEWINVENTORYITEM=DOC.createElement("li");
+			NEWINVENTORYITEM.innerHTML=`${item.name}: ${item.desc} (x${item.amount})`;
+			INVENTORY.appendChild(NEWINVENTORYITEM);
+		}
 	})
 	}catch(e){Console(e,"ERROR")}
 }
+
 function UpdateBossScreen(){
 	
 }
@@ -179,7 +189,7 @@ function UpdateEnemyStatDisplay(index){
 	if(GLOBAL.Combat.enemies[index]){
 		let stats=[];
 		for(const key in GLOBAL.Combat.enemies[index].Stats){
-			if(key!=="debuffs"){
+			if(key!=="debuffs"&&key!=="lootTable"){
 				if(typeof GLOBAL.Combat.enemies[index].Stats[key]!=="number"){
 					stats.push(`${key}: ${JSON.stringify(GLOBAL.Combat.enemies[index].Stats[key])}`);
 				}else{
@@ -285,7 +295,11 @@ function UpdateCharacterDisplay(index){
 						}
 					}
 				}else{
-					CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.damage?`Deals ${element.damage} ${element.damageType} damage`:""} ${element.desc}`;
+					if(element.healing){
+						CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.desc} ${element.healing}`;
+					}else{
+						CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.damage?`Deals ${element.damage} ${element.damageType} damage`:""} ${element.desc}`;
+					}
 				}
 				CHARACTERABILITYBUTTON.checkAbility=function(){
 					if(Party.Characters[index].Stats.stamina-element.cost<0||

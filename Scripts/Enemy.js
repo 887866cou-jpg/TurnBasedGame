@@ -17,6 +17,7 @@ class Enemy{
 					type:"Debuffer",
 					speed:rand(1,6),
 					resistances:{slashing:0,blunt:0,piercing:0,debuff:0,magic:0,holy:0},
+					lootTable:[{...Items[0],amount:rand(1,3)}],
 					debuffs:[],
 					debuffImmunities:[],
 				};
@@ -113,9 +114,11 @@ class Enemy{
 					type:"Bandit",
 					speed:rand(7,15),
 					resistances:{slashing:rand(30,41)/100,blunt:-(rand(10,16)/100),piercing:0,debuff:0,magic:0,holy:0},
+					lootTable:[{...Items[0],amount:rand(1,3)}],
 					debuffs:[],
 					debuffImmunities:[],
 				};
+				//Implement weapons in inventory
 				this.Actions={
 					Rapier:[
 					{
@@ -240,6 +243,7 @@ class Enemy{
 					name:`mercenary ${GLOBAL.EnemiesCreated}`,
 					speed:rand(9,15),
 					resistances:{slashing:rand(30,41)/100,blunt:0,piercing:-(rand(10,16)/100),debuff:0,magic:0,holy:0},
+					lootTable:[{...Items[0],amount:rand(2,4)}],
 					debuffs:[],
 					debuffImmunities:[],
 				};
@@ -354,6 +358,7 @@ class Enemy{
 					type:"Boss",
 					speed:1,
 					resistances:{slashing:0,blunt:0,piercing:0,debuff:0,magic:0,holy:0},
+					lootTable:[{...Items[0],amount:rand(1,3)},{...Items[1],amount:rand(10,13)}],
 					debuffs:[],
 					debuffImmunities:[],
 				};

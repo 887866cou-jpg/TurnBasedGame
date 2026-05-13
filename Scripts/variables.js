@@ -12,6 +12,11 @@ let activeMessages=0;
 let combatLog=0;
 let hasErrored=false;
 let hidelist=["System","Rolls","SEEDGEN","TSoBE"];
+let isIdle=false;
+let idleTimer=setTimeout(()=>{
+	isIdle=true;
+	Console("You are idle","IDLEPREVENTION")
+},300000)
 let notifications={
 	inventory:false,
 	achivements:false,
@@ -298,7 +303,7 @@ let Enchantments=[//Level 1 enchantments
 			})
 		}
 	},
-	/*{
+	{
 		name:"toxic",
 		equipment:["Weapons"],
 		effect(to){
@@ -312,7 +317,7 @@ let Enchantments=[//Level 1 enchantments
 				})
 			})
 		}
-	},*/
+	},
 	{
 		name:"self-dipped",
 		equipment:["Weapons"],

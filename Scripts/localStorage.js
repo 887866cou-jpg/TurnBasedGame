@@ -86,25 +86,36 @@ function gainMoney(type, amount){
 }
 function addTime(){
 	const currentTime=new Date();
+	if(isIdle){
+		isIdle=false;
+		startTime=currentTime;
+	}else{
+		if(idleTimer){
+			clearTimeout(idleTimer);
+			Console(getTotalseconds(currentTime)-getTotalseconds(startTime))
+			timePlayed+=getTotalseconds(currentTime)-getTotalseconds(startTime);
+			UpdateLocalStorage("timePlayed");
+			idleTimer=setTimeout(()=>{
+				isIdle=true;
+				Console("You are idle","IDLEPREVENTION")
+			},300000)
+		}
+	}
 	function getTotalseconds(date){
 		let output=0;
 		output+=Math.floor(date.getTime()/1000);
 		return output;
 	}
-	Console(getTotalseconds(currentTime)-getTotalseconds(startTime))
-	timePlayed+=getTotalseconds(currentTime)-getTotalseconds(startTime);
-	startTime=currentTime;
-	UpdateLocalStorage("timePlayed");
 }
 function toDaysHoursMinutesSeconds(seconds){
 	let output=[];
 	let remainder=0;
 	if(Math.floor(seconds/8640)>0){
-		output.push(`${Math.floor(seconds/86400)} Days `);
+		output.push(`${Math.floor(seconds/8640)} Days `);
 	}
-	output.push(`${`${Math.floor((seconds%86400)/360)}`.padStart(2,"0")}:`);
-	output.push(`${`${Math.floor(((seconds%86400)%360)/60)}`.padStart(2,"0")}.`);
-	output.push(`${`${(((seconds%86400)%360)%60)}`.padStart(2,"0")}`);
+	output.push(`${`${Math.floor((seconds%8640)/3600)}`.padStart(2,"0")}:`);
+	output.push(`${`${Math.floor(((seconds%8640)%3600)/60)}`.padStart(2,"0")}.`);
+	output.push(`${`${(((seconds%8640)%3600)%60)}`.padStart(2,"0")}`);
 	Console(output.join(""));
 	return output.join("");
 }

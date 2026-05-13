@@ -569,6 +569,32 @@ let Events=[
 				},
 			]
 		},
+	],
+	[
+		{
+			name:"Rest Site",
+			text:"You find yourself standing above a small campfire, embers drifting up from the small sticks and logs in the flames.",
+			options:[
+				{
+					text:"Rest to restore 30% of each characters max hp",
+					condition(){
+						return true;
+					},
+					effect(){
+						Party.Characters.forEach((character,index)=>{
+							heal({from:{type:"event"},to:character,amount:0.3,isPercent:true});
+						})
+					}
+				},
+				{
+					text:"Leave",
+					condition(){
+						return true;
+					},
+					effect(){}
+				}
+			]
+		}
 	]
 ];
 /*{

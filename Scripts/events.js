@@ -188,9 +188,9 @@ EXITINVENTORYBUTTON.addEventListener("click",()=>{
 })
 INVENTORYBUTTON.addEventListener("click",()=>{
 	//opens and updates the inventory
+	updateInventory();
 	GLOBAL.alerts=["inventory",0]
 	INVENTORYBUTTON.innerHTML="Inventory";
-	updateInventory();
 	INVENTORYMENU.showModal();
 });
 STATSBUTTON.addEventListener("click",()=>{

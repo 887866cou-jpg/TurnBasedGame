@@ -650,6 +650,8 @@ let GLOBAL={
 					cards:[
 						{
 							easy:[
+                                ["Strix","Strix","Gallinipper"],
+                                ["Strix","Gallinipper"],
 								["Strix","Strix","Strix"]//encounters
 							],
 							hard:[
@@ -666,7 +668,7 @@ let GLOBAL={
 					Card(prop, level){
 						if(!level){
 							if(this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length>1){
-								return this.cards[Math.min(Party.level-1,this.cards.length-1)][prop][rand(0,this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length)]
+								return this.cards[Math.min(Party.level-1,this.cards.length-1)][prop]            [rand(0,this.cards[Math.min(Party.level-1,this.cards.length-1)][prop].length)]
 							}else{
 								return this.cards[Math.min(Party.level-1,this.cards.length-1)][prop][0];
 							}
@@ -782,7 +784,7 @@ let GLOBAL={
 					MakeEquipChoice(rand(2,4));
 					EQUIPDIALOG.show();
 				}else if(chanceValue>=50){
-					let eventVal=rand(0,Events[GLOBAL.mapNode[0]].length)
+					let eventVal=rand(-1,Events[GLOBAL.mapNode[0]].length)
 					Console(`event value: ${eventVal}`);
 					if(Events[GLOBAL.mapNode[0]][eventVal]){
 						MakeEvent(eventVal);

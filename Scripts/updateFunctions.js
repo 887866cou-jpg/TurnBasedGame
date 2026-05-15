@@ -83,6 +83,45 @@ function updateInventory(){
 		}
 	})
 	Party.inventory.forEach((item,index)=>{
+		if(item.type=="consumable"){
+			let NEWBOX=DOC.createElement("fieldset");
+			let NEWCONSUMABLE=DOC.createElement("li");
+			NEWCONSUMABLE.innerHTML=`${item.name} x${item.amount}`;
+			item.options.forEach((option)=>{
+				let NEWOPTION=DOC.createElement("button");
+				NEWBOX.appendChild(NEWOPTION);
+				NEWOPTION.innerHTML=`${option.name}: ${option.desc} (${item.uses?`${item.uses} uses remaining`:""})`;
+				NEWOPTION.addEventListener("click",()=>{
+					item.uses--;
+					Party.inventory.forEach((item1,index)=>{
+						if(item1.uses<=0){
+							if(item1.amount>1){
+								Party.inventory[index].uses=item1.maxUses;
+								Party.inventory[index].amount--;
+							}else{
+								Party.inventory.splice(index,1);
+							}
+						}
+					})
+					Party.inventory=Party.inventory.filter((item)=>item.uses>0);
+					updateInventory();
+					if(option.effect){
+						option.effect();
+					}
+				})
+				if(typeof option.condition=="boolean"){
+					if(option.condition){
+						NEWOPTION.disabled=false;
+					}else{
+						NEWOPTION.disabled=true;
+					}
+				}
+			})
+			INVENTORY.appendChild(NEWCONSUMABLE);
+			INVENTORY.appendChild(NEWBOX);
+		}
+	})
+	Party.inventory.forEach((item,index)=>{
 		if(item.type=="material"){
 			let NEWINVENTORYITEM=DOC.createElement("li");
 			NEWINVENTORYITEM.innerHTML=`${item.name}: ${item.desc} (x${item.amount})`;
@@ -296,7 +335,7 @@ function UpdateCharacterDisplay(index){
 					}
 				}else{
 					if(element.healing){
-						CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.desc} ${element.healing}`;
+						CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.desc} ${Math.round(element.healing)}`;
 					}else{
 						CHARACTERABILITYBUTTON.innerHTML=`${key}->${element.name} (${element.cost} stamina): ${element.damage?`Deals ${element.damage} ${element.damageType} damage`:""} ${element.desc}`;
 					}

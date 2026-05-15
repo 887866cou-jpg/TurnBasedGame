@@ -13,7 +13,7 @@ function addToInventory(ITEMID,amount,check){
 	//
 	try{
 	if(Items[ITEMID]){
-		if(Items[ITEMID].type=="material"){
+		if(Items[ITEMID].type=="material"||Items[ITEMID].type=="consumable"){
 			let itemAdding={...Items[ITEMID]};
 			itemAdding.amount=parseInt(amount);
 			let hasItem=-1;
@@ -861,6 +861,9 @@ function CheckForDeath(){
 		location.reload();
 	}
 }
+function fastForward(){
+	GLOBAL.mapNode[0]++;
+}
 function PassTurn(){
 	try{
 	addTime();
@@ -976,7 +979,7 @@ function Console(message, sender="System"){
 		}
 		//console.log(`${sender}: ${message} `);
 		CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
-	}else if(!hasErrored&&!hidelist.includes(sender)){
+	}else if(!hasErrored&&!hidelist.includes(sender)&&!showOnly){
 		activeMessages++;
 		setTimeout(()=>{
 			consoleOutput.push(`${sender}: ${message}`)
@@ -987,6 +990,19 @@ function Console(message, sender="System"){
 			CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
 			activeMessages--;
 		},0+(activeMessages*100));
+	}else if(showOnly){
+		if(showOnly==sender){
+			activeMessages++;
+			setTimeout(()=>{
+				consoleOutput.push(`${sender}: ${message}`)
+				if(consoleOutput.length>8){
+					consoleOutput=consoleOutput.slice(-8);
+				}
+				//console.log(`${sender}: ${message} `);
+				CONSOLEOUTPUT.innerHTML=consoleOutput.join("<br>");
+				activeMessages--;
+			},0+(activeMessages*100));
+		}
 	}
 }
 function LevelEverybody(){

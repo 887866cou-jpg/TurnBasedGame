@@ -12,6 +12,7 @@ let activeMessages=0;
 let combatLog=0;
 let hasErrored=false;
 let hidelist=["System","Rolls","SEEDGEN","TSoBE"];
+let showOnly;
 let isIdle=false;
 let idleTimer=setTimeout(()=>{
 	isIdle=true;

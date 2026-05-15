@@ -7,6 +7,10 @@ let baseSettings={
 	}
 	
 };
+if(!sessionStorage.getItem("hasOpened")){
+	alert("PLEASE READ THE CHANGELOG BEFORE YOU START THE GAME TO SEE WHAT I HAVE ADDED, AND THINGS TO LOOK OUT FOR!\nPLEASE READ THE CHANGELOG BEFORE YOU START THE GAME TO SEE WHAT I HAVE ADDED, AND THINGS TO LOOK OUT FOR!\nPLEASE READ THE CHANGELOG BEFORE YOU START THE GAME TO SEE WHAT I HAVE ADDED, AND THINGS TO LOOK OUT FOR!");
+	sessionStorage.setItem("hasOpened",true);
+}
 var games=JSON.parse(localStorage.getItem("games"))??0;
 var achievements=JSON.parse(localStorage.getItem("achievements"))??[];
 var battles=JSON.parse(localStorage.getItem("battles"))??0;
@@ -110,12 +114,13 @@ function addTime(){
 function toDaysHoursMinutesSeconds(seconds){
 	let output=[];
 	let remainder=0;
-	if(Math.floor(seconds/8640)>0){
-		output.push(`${Math.floor(seconds/8640)} Days `);
+	if(Math.floor(seconds/86400)>0){
+		output.push(`${Math.floor(seconds/86400)} Days `);
 	}
-	output.push(`${`${Math.floor((seconds%8640)/3600)}`.padStart(2,"0")}:`);
-	output.push(`${`${Math.floor(((seconds%8640)%3600)/60)}`.padStart(2,"0")}.`);
-	output.push(`${`${(((seconds%8640)%3600)%60)}`.padStart(2,"0")}`);
+	output.push(`${`${Math.floor((seconds%86400)/3600)}`.padStart(2,"0")}:`);
+	output.push(`${`${Math.floor(((seconds%86400)%3600)/60)}`.padStart(2,"0")}.`);
+	output.push(`${`${(((seconds%86400)%3600)%60)}`.padStart(2,"0")}`);
+	output.push(`(${seconds})`)
 	Console(output.join(""));
 	return output.join("");
 }
